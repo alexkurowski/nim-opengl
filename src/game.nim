@@ -2,8 +2,9 @@ import
   sdl2,
   opengl,
   lib.display,
+  graphics.model,
   states.gameplay,
-  types
+  graphics.shaders.simple
 
 
 var
@@ -23,6 +24,7 @@ proc mainLoop*(): void =
      0.5.GLfloat,  0.5.GLfloat
   ]
   var model = newModel[GLfloat](vertices.addr)
+  var simpleShader = newSimpleShader()
 
   while not exit:
     while pollEvent(event):
@@ -45,7 +47,7 @@ proc mainLoop*(): void =
 
     display.renderStart()
 
-    model.draw()
+    model.draw(simpleShader)
     # TODO: Render game here
 
     display.renderEnd()
