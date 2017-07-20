@@ -1,6 +1,5 @@
 import
-  opengl,
-  shader
+  opengl
 
 
 {.experimental.}
@@ -53,9 +52,7 @@ proc `=destroy`*(model: var Model) =
   glDeleteBuffers(model.buffers.len.GLsizei, model.buffers[0].addr)
 
 
-proc draw*(model: Model, shader: Shader): void =
-  glUseProgram(shader.id)
+proc draw*(model: Model): void =
   glBindVertexArray(model.vao)
   glDrawArrays(GL_TRIANGLES, 0.GLint, 6.GLint)
   glBindVertexArray(0)
-  glUseProgram(0)

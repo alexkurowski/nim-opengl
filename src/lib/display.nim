@@ -1,7 +1,8 @@
 import
   sdl2,
   opengl,
-  glu
+  glu,
+  ../graphics/shader
 
 
 const
@@ -68,3 +69,11 @@ proc renderStart*(): void =
 
 proc renderEnd*(): void =
   glSwapWindow(window)
+
+
+proc setShader*(shader: Shader): void =
+  glUseProgram(shader.id);
+
+
+proc unsetShader*(): void =
+  glUseProgram(0);

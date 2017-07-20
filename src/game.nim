@@ -42,12 +42,14 @@ proc mainLoop*(): void =
 
       else: discard
 
-    state()
     # TODO: Update game here
+    state()
 
     display.renderStart()
 
-    model.draw(simpleShader)
     # TODO: Render game here
+    display.setShader(simpleShader)
+    model.draw()
+    display.unsetShader()
 
     display.renderEnd()
