@@ -16,6 +16,10 @@ var
 proc initializeWindow(width, height: cint): void =
   discard sdl2.init(INIT_EVERYTHING)
 
+  discard glSetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE)
+  discard glSetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3)
+  discard glSetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1)
+
   window = createWindow(
     "RL",
     SDL_WINDOWPOS_CENTERED,

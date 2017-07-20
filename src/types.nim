@@ -5,37 +5,54 @@ import
 {.experimental.}
 type
   Model* = ref object
-    id: GLuint
+    vao: GLuint
+    buffers: seq[GLuint]
 
 
-proc newModel*[T](vertices: ptr seq[T]): Model =
-  result = Model()
+proc addVBO*[T](model: Model, dimensions: cint, vertices: ptr seq[T]): void =
+  var vbo: GLuint;
+  glGenBuffers(1.GLsizei, vbo.addr)
+  glBindBuffer(GL_ARRAY_BUFFER, vbo)
 
-  glGenBuffers(1.GLsizei, result.id.addr)
-  glBindBuffer(GL_ARRAY_BUFFER, result.id)
   glBufferData(
     GL_ARRAY_BUFFER,
-    len(vertices[]).GLsizeiptr * sizeof(T).GLsizeiptr,
+    GLsizeiptr( vertices[].len * sizeof(T) ),
     vertices[0].addr,
     GL_STATIC_DRAW
   )
   glVertexAttribPointer(
-    0.GLuint,
-    2.GLint,
+    model.buffers.len.GLuint,
+    dimensions.GLint,
     cGL_FLOAT,
     GL_FALSE,
     0.GLsizei,
     nil
   )
-  glEnableVertexAttribArray(0)
+
+  glEnableVertexAttribArray(model.buffers.len.GLuint)
+
+  model.buffers.add(vbo)
+
   glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+
+proc newModel*[T](vertices: ptr seq[T]): Model =
+  result = Model(buffers: @[])
+
+  glGenVertexArrays(1, result.vao.addr)
+  glBindVertexArray(result.vao)
+
+  addVBO[T](result, 2, vertices)
+
+  glBindVertexArray(0)
 
 
 proc `=destroy`*(model: var Model) =
-  glDeleteBuffers(1.GLsizei, model.id.addr)
+  glDeleteVertexArrays(1, model.vao.addr)
+  glDeleteBuffers(model.buffers.len.GLsizei, model.buffers[0].addr)
 
 
 proc draw*(model: Model): void =
-  glBindBuffer(GL_ARRAY_BUFFER, model.id)
+  glBindVertexArray(model.vao)
   glDrawArrays(GL_TRIANGLES, 0.GLint, 6.GLint)
-  glBindBuffer(GL_ARRAY_BUFFER, 0)
+  glBindVertexArray(0)
