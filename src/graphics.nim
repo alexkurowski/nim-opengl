@@ -22,8 +22,25 @@ proc renderStart*(): void =
   # glMatrixMode(GL_MODELVIEW)                          # To operate on model-view matrix
   # glLoadIdentity()                                    # Reset the model-view matrix
 
+
 proc renderEnd*(): void =
   window.swap()
+
+
+proc setShader*(id: int): void =
+  glUseProgram(shader.shaders[id]);
+
+
+proc unsetShader*(): void =
+  glUseProgram(0);
+
+
+proc setTexture*(id: int): void =
+  glBindTexture(GL_TEXTURE_2D, texture.textures[id])
+
+
+proc unsetTexture*(): void =
+  glBindTexture(GL_TEXTURE_2D, 0)
 
 
 proc renderModel*(id: int): void =
@@ -36,17 +53,3 @@ proc renderModel*(id: int): void =
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
   glBindVertexArray(0)
-
-
-proc setShader*(id: int): void =
-  glUseProgram(shader.shaders[id]);
-
-proc unsetShader*(): void =
-  glUseProgram(0);
-
-
-proc setTexture*(id: int): void =
-  glBindTexture(GL_TEXTURE_2D, texture.textures[id])
-
-proc unsetTexture*(): void =
-  glBindTexture(GL_TEXTURE_2D, 0)

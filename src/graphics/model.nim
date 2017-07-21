@@ -59,7 +59,6 @@ proc addEBO(model: var Model, indices: ptr seq[GLuint]): void =
   model.vboList.add(ebo)
 
 
-
 proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
   var
     vertexCoordsGl:  seq[GLfloat] = @[]
