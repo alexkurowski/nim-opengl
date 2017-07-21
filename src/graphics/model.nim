@@ -5,9 +5,9 @@ import
 {.experimental.}
 type
   Model* = ref object
-    vao: GLuint
+    vao*: GLuint
     buffers: seq[GLuint]
-    indexCount: GLsizei
+    indexCount*: GLsizei
 
 
 proc addVBO*(model: Model, dimensions: cint, vertices: ptr seq[GLfloat]): void =
@@ -74,9 +74,3 @@ proc newModel*(vertexCoords, textureCoords: ptr seq[GLfloat], indices: ptr seq[G
 proc `=destroy`*(model: var Model) =
   glDeleteVertexArrays(1, model.vao.addr)
   glDeleteBuffers(model.buffers.len.GLsizei, model.buffers[0].addr)
-
-
-proc draw*(model: Model): void =
-  glBindVertexArray(model.vao)
-  glDrawElements(GL_TRIANGLES, model.indexCount, GL_UNSIGNED_INT, nil)
-  glBindVertexArray(0)

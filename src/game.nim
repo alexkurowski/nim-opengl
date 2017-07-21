@@ -3,6 +3,7 @@ import
   opengl,
   lib.display,
   states.gameplay,
+  renderer,
   graphics.model,
   graphics.texture,
   graphics.shaders.simple
@@ -15,28 +16,7 @@ var
 
 
 proc mainLoop*(): void =
-  var vertexCoords = @[
-     0.5.GLfloat,  0.5.GLfloat,
-    -0.5.GLfloat,  0.5.GLfloat,
-    -0.5.GLfloat, -0.5.GLfloat,
-     0.5.GLfloat, -0.5.GLfloat
-  ]
-
-  var textureCoords = @[
-     1.0.GLfloat, 1.0.GLfloat,
-     0.0.GLfloat, 1.0.GLfloat,
-     0.0.GLfloat, 0.0.GLfloat,
-     1.0.GLfloat, 0.0.GLfloat
-  ]
-
-  var vertexIndices = @[
-    0.GLuint, 1.GLuint, 2.GLuint,
-    2.GLuint, 3.GLuint, 0.GLuint
-  ]
-
-  var model = newModel(vertexCoords.addr, textureCoords.addr, vertexIndices.addr)
-  var simpleShader = newSimpleShader()
-  var texture = newTexture("grass")
+  renderer.initialize()
 
   while not exit:
     while pollEvent(event):
@@ -57,15 +37,4 @@ proc mainLoop*(): void =
     # TODO: Update game here
     state()
 
-    display.renderStart()
-
-    # TODO: Render game here
-    display.setShader(simpleShader)
-    display.setTexture(texture)
-
-    model.draw()
-
-    display.unsetTexture()
-    display.unsetShader()
-
-    display.renderEnd()
+    renderer.render()

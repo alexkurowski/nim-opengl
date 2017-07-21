@@ -2,6 +2,7 @@ import
   sdl2,
   opengl,
   glu,
+  ../graphics/model,
   ../graphics/shader,
   ../graphics/texture
 
@@ -70,6 +71,12 @@ proc renderStart*(): void =
 
 proc renderEnd*(): void =
   glSwapWindow(window)
+
+
+proc drawModel*(model: Model): void =
+  glBindVertexArray(model.vao)
+  glDrawElements(GL_TRIANGLES, model.indexCount, GL_UNSIGNED_INT, nil)
+  glBindVertexArray(0)
 
 
 proc setShader*(shader: Shader): void =
