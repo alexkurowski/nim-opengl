@@ -3,19 +3,17 @@ import
   opengl
 
 
-type
-  Texture* = ref object
-    id*: GLuint
+var
+  textures*: seq[GLuint] = @[]
 
 
-proc newTexture*(filename: string): Texture =
-  result = Texture()
-
-  glGenTextures(1.GLsizei, result.id.addr)
+proc new*(filename: string): int =
+  var id: GLuint
+  glGenTextures(1.GLsizei, id.addr)
 
   var image = loadBMP("assets/textures/" & filename & ".bmp")
 
-  glBindTexture(GL_TEXTURE_2D, result.id)
+  glBindTexture(GL_TEXTURE_2D, id)
 
   glTexImage2D(
     GL_TEXTURE_2D,
@@ -35,3 +33,6 @@ proc newTexture*(filename: string): Texture =
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 
   glBindTexture(GL_TEXTURE_2D, 0)
+
+  result = textures.len
+  textures.add(id)

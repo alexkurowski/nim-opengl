@@ -1,54 +1,51 @@
 import
-  opengl,
-  lib.display,
-  graphics.shader,
-  graphics.shaders.simple,
+  graphics,
+  graphics.model,
   graphics.texture,
-  graphics.model
+  graphics.shader,
+  graphics.window
 
 
 var
-  models: seq[Model]
-  simpleShader: Shader
-  grassTexture: Texture
+  myModel: int
+  simpleShader: int
+  grassTexture: int
 
 
-proc initialize*(): void =
+proc load*(): void =
   var vertexCoords = @[
-     0.5.GLfloat,  0.5.GLfloat,
-    -0.5.GLfloat,  0.5.GLfloat,
-    -0.5.GLfloat, -0.5.GLfloat,
-     0.5.GLfloat, -0.5.GLfloat
+     0.5,  0.5,
+    -0.5,  0.5,
+    -0.5, -0.5,
+     0.5, -0.5
   ]
 
   var textureCoords = @[
-     1.0.GLfloat, 1.0.GLfloat,
-     0.0.GLfloat, 1.0.GLfloat,
-     0.0.GLfloat, 0.0.GLfloat,
-     1.0.GLfloat, 0.0.GLfloat
+     1.0, 1.0,
+     0.0, 1.0,
+     0.0, 0.0,
+     1.0, 0.0
   ]
 
   var vertexIndices = @[
-    0.GLuint, 1.GLuint, 2.GLuint,
-    2.GLuint, 3.GLuint, 0.GLuint
+    0, 1, 2,
+    2, 3, 0
   ]
 
-  models = @[]
-  models.add( newModel(vertexCoords.addr, textureCoords.addr, vertexIndices.addr) )
-  simpleShader = newSimpleShader()
-  grassTexture = newTexture("grass")
+  myModel      = model.new(vertexCoords, textureCoords, vertexIndices)
+  simpleShader = shader.new("simple")
+  grassTexture = texture.new("grass")
 
 
 proc render*(): void =
-  display.renderStart()
+  graphics.renderStart()
 
-  display.setShader(simpleShader)
-  display.setTexture(grassTexture)
+  graphics.setShader(simpleShader)
+  graphics.setTexture(grassTexture)
 
-  for model in models:
-    display.drawModel(model)
+  graphics.renderModel(myModel)
 
-  display.unsetShader()
-  display.unsetTexture()
+  graphics.unsetTexture()
+  graphics.unsetShader()
 
-  display.renderEnd()
+  graphics.renderEnd()

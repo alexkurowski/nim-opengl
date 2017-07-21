@@ -1,40 +1,31 @@
 import
   sdl2,
-  opengl,
-  lib.display,
-  states.gameplay,
+  input,
+  graphics,
   renderer,
-  graphics.model,
-  graphics.texture,
-  graphics.shaders.simple
+  states.gameplay
 
 
 var
-  event = sdl2.defaultEvent
-  exit  = false
   state = gameplay.state
 
 
+proc initialize*(): void =
+  graphics.initialize(
+    title  = "Hello",
+    width  = 800,
+    height = 600
+  )
+
+  renderer.load()
+
+
 proc mainLoop*(): void =
-  renderer.initialize()
-
-  while not exit:
-    while pollEvent(event):
-      case event.kind
-      of QuitEvent:
-        exit = true
-
-      of WindowEvent:
-        var windowEvent = cast[WindowEventPtr](addr(event))
-        if windowEvent.event == WindowEvent_Resized:
-          display.onResize(
-            width = windowEvent.data1,
-            height = windowEvent.data2
-          )
-
-      else: discard
-
-    # TODO: Update game here
+  while not input.exit:
+    input.read()
     state()
-
     renderer.render()
+
+
+proc finish*(): void =
+  graphics.destroy()

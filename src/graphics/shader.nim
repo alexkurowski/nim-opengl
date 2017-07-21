@@ -2,14 +2,12 @@ import
   opengl
 
 
-{.experimental.}
-type
-  Shader* = ref object
-    id*: GLuint
+var
+  shaders*: seq[GLuint] = @[]
 
 
-proc bindAttributes*(shader: Shader, location: GLuint, name: cstring): void =
-  glBindAttribLocation(shader.id, location, name)
+proc bindAttributes*(shader: GLuint, location: GLuint, name: cstring): void =
+  glBindAttribLocation(shader, location, name)
 
 
 proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
@@ -23,22 +21,27 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
   if not isSuccess == 0: echo "TOO BAD"
 
 
-proc newShader*(vertexSrc, fragmentSrc: cstringArray): Shader =
-  result = Shader()
+proc new*(filename: string): int =
+  var vertexSrc   = [readFile("assets/shaders/" & filename & ".glslv")].allocCStringArray
+  var fragmentSrc = [readFile("assets/shaders/" & filename & ".glslf")].allocCStringArray
 
-  var vertexShaderID = compileShader(vertexSrc, GL_VERTEX_SHADER)
+  var vertexShaderID   = compileShader(vertexSrc, GL_VERTEX_SHADER)
   var fragmentShaderID = compileShader(fragmentSrc, GL_FRAGMENT_SHADER)
 
-  result.id = glCreateProgram()
+  var id = glCreateProgram()
 
-  glAttachShader(result.id, vertexShaderID)
-  glAttachShader(result.id, fragmentShaderID)
+  glAttachShader(id, vertexShaderID)
+  glAttachShader(id, fragmentShaderID)
 
-  glLinkProgram(result.id)
+  glLinkProgram(id)
 
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
+  result = shaders.len
+  shaders.add(id)
 
-proc `=destroy`*(shader: var Shader) =
-  glDeleteProgram(shader.id)
+
+proc destroy*() =
+  for shader in shaders:
+    glDeleteProgram(shader)

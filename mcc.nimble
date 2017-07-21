@@ -13,4 +13,4 @@ requires "nim >= 0.17.0"
 requires "sdl2"
 
 task run, "build and run":
-  exec "nim c -o=build/bin/game --nimcache=build -r src/main.nim"
+  exec "nim c -o=game --nimcache=build -r src/main.nim"
