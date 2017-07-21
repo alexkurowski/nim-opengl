@@ -28,7 +28,7 @@ proc renderEnd*(): void =
 
 
 proc setShader*(id: int): void =
-  glUseProgram(shader.shaders[id]);
+  glUseProgram(shaders[id].id);
 
 
 proc unsetShader*(): void =
@@ -36,20 +36,22 @@ proc unsetShader*(): void =
 
 
 proc setTexture*(id: int): void =
-  glBindTexture(GL_TEXTURE_2D, texture.textures[id])
+  glBindTexture(GL_TEXTURE_2D, textures[id])
 
 
 proc unsetTexture*(): void =
   glBindTexture(GL_TEXTURE_2D, 0)
 
 
-proc renderModel*(id: int): void =
-  let m = model.models[id]
+proc setModel*(id: int): void =
+  glBindVertexArray(models[id].vao)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, models[id].ebo)
 
-  glBindVertexArray(m.vao)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.ebo)
 
-  glDrawElements(GL_TRIANGLES, m.indexCount, GL_UNSIGNED_INT, nil)
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+proc unsetModel*(): void =
   glBindVertexArray(0)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+
+
+proc renderModel*(id: int): void =
+  glDrawElements(GL_TRIANGLES, models[id].indexCount, GL_UNSIGNED_INT, nil)

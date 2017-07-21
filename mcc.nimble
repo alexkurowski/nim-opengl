@@ -11,6 +11,7 @@ skipExt       = @["nim"]
 
 requires "nim >= 0.17.0"
 requires "sdl2"
+requires "glm"
 
 task run, "build and run":
   exec "nim c -o=game --nimcache=build -r src/main.nim"

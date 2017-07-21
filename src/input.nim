@@ -62,6 +62,6 @@ proc read*(): void =
       mouseButtonDown(event.button.button)
 
     of MouseButtonUp:
-      mouseButtonDown(event.button.button)
+      mouseButtonUp(event.button.button)
 
     else: discard

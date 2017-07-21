@@ -1,12 +1,16 @@
 import
+  times,
+  glm,
   graphics,
   graphics.model,
   graphics.texture,
   graphics.shader,
-  graphics.window
+  graphics.entity
 
 
 var
+  quad: Entity
+  camera: Entity
   myModel: int
   simpleShader: int
   grassTexture: int
@@ -36,14 +40,30 @@ proc load*(): void =
   simpleShader = shader.new("simple")
   grassTexture = texture.new("grass")
 
+  quad = Entity(
+    position: vec3f(0.0, 0.0, -3.0),
+    rotation: vec3f(0.0, 0.0, 0.0)
+  )
+
+  camera = Entity(
+    position: vec3f(0.0, 0.0, 0.0),
+    rotation: vec3f(0.0, 0.0, 0.0)
+  )
+
 
 proc render*(): void =
   graphics.renderStart()
 
   graphics.setShader(simpleShader)
+  simpleShader.setMat4("viewMatrix", camera.viewMatrix)
+
   graphics.setTexture(grassTexture)
 
+  graphics.setModel(myModel)
+  simpleShader.setMat4("modelMatrix", quad.modelMatrix)
+
   graphics.renderModel(myModel)
+  graphics.unsetModel()
 
   graphics.unsetTexture()
   graphics.unsetShader()
