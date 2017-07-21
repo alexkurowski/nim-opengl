@@ -2,8 +2,9 @@ import
   sdl2,
   opengl,
   lib.display,
-  graphics.model,
   states.gameplay,
+  graphics.model,
+  graphics.texture,
   graphics.shaders.simple
 
 
@@ -14,17 +15,28 @@ var
 
 
 proc mainLoop*(): void =
-  var vertices = @[
+  var vertexCoords = @[
      0.5.GLfloat,  0.5.GLfloat,
     -0.5.GLfloat,  0.5.GLfloat,
     -0.5.GLfloat, -0.5.GLfloat,
-
-    -0.5.GLfloat, -0.5.GLfloat,
-     0.5.GLfloat, -0.5.GLfloat,
-     0.5.GLfloat,  0.5.GLfloat
+     0.5.GLfloat, -0.5.GLfloat
   ]
-  var model = newModel[GLfloat](vertices.addr)
+
+  var textureCoords = @[
+     1.0.GLfloat, 1.0.GLfloat,
+     0.0.GLfloat, 1.0.GLfloat,
+     0.0.GLfloat, 0.0.GLfloat,
+     1.0.GLfloat, 0.0.GLfloat
+  ]
+
+  var vertexIndices = @[
+    0.GLuint, 1.GLuint, 2.GLuint,
+    2.GLuint, 3.GLuint, 0.GLuint
+  ]
+
+  var model = newModel(vertexCoords.addr, textureCoords.addr, vertexIndices.addr)
   var simpleShader = newSimpleShader()
+  var texture = newTexture("grass")
 
   while not exit:
     while pollEvent(event):
@@ -49,7 +61,11 @@ proc mainLoop*(): void =
 
     # TODO: Render game here
     display.setShader(simpleShader)
+    display.setTexture(texture)
+
     model.draw()
+
+    display.unsetTexture()
     display.unsetShader()
 
     display.renderEnd()

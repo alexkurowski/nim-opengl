@@ -2,7 +2,8 @@ import
   sdl2,
   opengl,
   glu,
-  ../graphics/shader
+  ../graphics/shader,
+  ../graphics/texture
 
 
 const
@@ -77,3 +78,12 @@ proc setShader*(shader: Shader): void =
 
 proc unsetShader*(): void =
   glUseProgram(0);
+
+
+proc setTexture*(texture: Texture): void =
+  glBindTexture(GL_TEXTURE_2D, texture.id)
+
+
+proc unsetTexture*(): void =
+  glBindTexture(GL_TEXTURE_2D, 0)
+

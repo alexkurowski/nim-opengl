@@ -6,11 +6,11 @@ import
 type
   Shader* = ref object
     id*: GLuint
+    time: GLuint
 
 
 proc bindAttributes*(shader: Shader, location: GLuint, name: cstring): void =
   glBindAttribLocation(shader.id, location, name)
-  discard
 
 
 proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
@@ -25,7 +25,7 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
 
 
 proc newShader*(vertexSrc, fragmentSrc: cstringArray): Shader =
-  result = Shader()
+  result = Shader(time: 0.GLuint)
 
   var vertexShaderID = compileShader(vertexSrc, GL_VERTEX_SHADER)
   var fragmentShaderID = compileShader(fragmentSrc, GL_FRAGMENT_SHADER)

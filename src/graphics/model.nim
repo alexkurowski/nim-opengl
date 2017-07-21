@@ -7,16 +7,17 @@ type
   Model* = ref object
     vao: GLuint
     buffers: seq[GLuint]
+    indexCount: GLsizei
 
 
-proc addVBO*[T](model: Model, dimensions: cint, vertices: ptr seq[T]): void =
-  var vbo: GLuint;
+proc addVBO*(model: Model, dimensions: cint, vertices: ptr seq[GLfloat]): void =
+  var vbo: GLuint
   glGenBuffers(1.GLsizei, vbo.addr)
   glBindBuffer(GL_ARRAY_BUFFER, vbo)
 
   glBufferData(
     GL_ARRAY_BUFFER,
-    GLsizeiptr( vertices[].len * sizeof(T) ),
+    GLsizeiptr( vertices[].len * sizeof(GLfloat) ),
     vertices[0].addr,
     GL_STATIC_DRAW
   )
@@ -36,13 +37,36 @@ proc addVBO*[T](model: Model, dimensions: cint, vertices: ptr seq[T]): void =
   glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 
-proc newModel*[T](vertices: ptr seq[T]): Model =
-  result = Model(buffers: @[])
+proc addEBO*(model: Model, indices: ptr seq[GLuint]): void =
+  var ebo: GLuint
+  glGenBuffers(1.GLsizei, ebo.addr)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+
+  glBufferData(
+    GL_ELEMENT_ARRAY_BUFFER,
+    GLsizeiptr( indices[].len * sizeof(GLuint) ),
+    indices[0].addr,
+    GL_STATIC_DRAW
+  )
+
+  model.buffers.add(ebo)
+
+  # glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+
+
+
+proc newModel*(vertexCoords, textureCoords: ptr seq[GLfloat], indices: ptr seq[GLuint]): Model =
+  result = Model(
+    buffers: @[],
+    indexCount: indices[].len.GLsizei
+  )
 
   glGenVertexArrays(1, result.vao.addr)
   glBindVertexArray(result.vao)
 
-  addVBO[T](result, 2, vertices)
+  addVBO(result, 2, vertexCoords)
+  addVBO(result, 2, textureCoords)
+  addEBO(result, indices)
 
   glBindVertexArray(0)
 
@@ -54,5 +78,5 @@ proc `=destroy`*(model: var Model) =
 
 proc draw*(model: Model): void =
   glBindVertexArray(model.vao)
-  glDrawArrays(GL_TRIANGLES, 0.GLint, 6.GLint)
+  glDrawElements(GL_TRIANGLES, model.indexCount, GL_UNSIGNED_INT, nil)
   glBindVertexArray(0)
