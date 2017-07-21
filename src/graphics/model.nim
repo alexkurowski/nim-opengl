@@ -77,8 +77,8 @@ proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
   glGenVertexArrays(1, model.vao.addr)
   glBindVertexArray(model.vao)
 
-  addVBO(model, 2, vertexCoordsGl.addr)
-  addVBO(model, 2, textureCoordsGl.addr)
+  addVBO(model, 3, vertexCoordsGl.addr)
+  addVBO(model, 3, textureCoordsGl.addr)
   addEBO(model, indicesGl.addr)
 
   glBindVertexArray(0)
