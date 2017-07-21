@@ -27,8 +27,6 @@ in vec2 passTextureCoords;
 
 uniform sampler2D textureColors;
 
-uniform float time;
-
 void main() {
   color = texture(textureColors, passTextureCoords);
 }
