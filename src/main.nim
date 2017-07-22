@@ -1,7 +1,7 @@
 import game
 
 
-game.initialize()
+game.start()
 
 game.mainLoop()
 

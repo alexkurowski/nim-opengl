@@ -3,7 +3,7 @@ import
 
 
 type
-  Model* = ref object
+  Mesh* = ref object
     vao*: GLuint
     ebo*: GLuint
     vboList: seq[GLuint]
@@ -11,10 +11,10 @@ type
 
 
 var
-  models*: seq[Model] = @[]
+  meshes*: seq[Mesh] = @[]
 
 
-proc addVBO(model: var Model, dimensions: cint, vertices: ptr seq[GLfloat]): void =
+proc addVBO(mesh: var Mesh, dimensions: cint, vertices: ptr seq[GLfloat]): void =
   var vbo: GLuint
   glGenBuffers(1.GLsizei, vbo.addr)
   glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -26,7 +26,7 @@ proc addVBO(model: var Model, dimensions: cint, vertices: ptr seq[GLfloat]): voi
     GL_STATIC_DRAW
   )
   glVertexAttribPointer(
-    model.vboList.len.GLuint,
+    mesh.vboList.len.GLuint,
     dimensions.GLint,
     cGL_FLOAT,
     GL_FALSE,
@@ -36,12 +36,12 @@ proc addVBO(model: var Model, dimensions: cint, vertices: ptr seq[GLfloat]): voi
 
   glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-  glEnableVertexAttribArray(model.vboList.len.GLuint)
+  glEnableVertexAttribArray(mesh.vboList.len.GLuint)
 
-  model.vboList.add(vbo)
+  mesh.vboList.add(vbo)
 
 
-proc addEBO(model: var Model, indices: ptr seq[GLuint]): void =
+proc addEBO(mesh: var Mesh, indices: ptr seq[GLuint]): void =
   var ebo: GLuint
   glGenBuffers(1.GLsizei, ebo.addr)
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
@@ -55,8 +55,8 @@ proc addEBO(model: var Model, indices: ptr seq[GLuint]): void =
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
 
-  model.ebo = ebo
-  model.vboList.add(ebo)
+  mesh.ebo = ebo
+  mesh.vboList.add(ebo)
 
 
 proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
@@ -69,25 +69,25 @@ proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
   for x in textureCoords: textureCoordsGl.add(x.GLfloat)
   for x in indices:       indicesGl.add(x.GLuint)
 
-  var model = Model(
+  var mesh = Mesh(
     vboList: @[],
     indexCount: indices.len.GLsizei
   )
 
-  glGenVertexArrays(1, model.vao.addr)
-  glBindVertexArray(model.vao)
+  glGenVertexArrays(1, mesh.vao.addr)
+  glBindVertexArray(mesh.vao)
 
-  addVBO(model, 3, vertexCoordsGl.addr)
-  addVBO(model, 2, textureCoordsGl.addr)
-  addEBO(model, indicesGl.addr)
+  addVBO(mesh, 3, vertexCoordsGl.addr)
+  addVBO(mesh, 2, textureCoordsGl.addr)
+  addEBO(mesh, indicesGl.addr)
 
   glBindVertexArray(0)
 
-  result = models.len
-  models.add(model)
+  result = meshes.len
+  meshes.add(mesh)
 
 
-proc destroy*() =
-  for model in models:
-    glDeleteVertexArrays(1, model.vao.addr)
-    glDeleteBuffers(model.vboList.len.GLsizei, model.vboList[0].addr)
+proc destroyMeshes*() =
+  for mesh in meshes:
+    glDeleteVertexArrays(1, mesh.vao.addr)
+    glDeleteBuffers(mesh.vboList.len.GLsizei, mesh.vboList[0].addr)

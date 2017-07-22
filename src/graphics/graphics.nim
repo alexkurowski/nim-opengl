@@ -2,19 +2,19 @@ import
   sdl2,
   opengl,
   glu,
-  graphics.window,
-  graphics.model,
-  graphics.shader,
-  graphics.texture
+  window,
+  mesh,
+  texture,
+  shader,
+  matrix
 
 
-proc initialize*(title: cstring, width, height: cint): void =
-  window.initializeWindow(title, width, height)
-  window.initializeOpenGl()
-
-
-proc destroy*(): void =
-  window.destroy()
+export
+  window,
+  mesh,
+  texture,
+  shader,
+  matrix
 
 
 proc renderStart*(): void =
@@ -43,15 +43,15 @@ proc unsetTexture*(): void =
   glBindTexture(GL_TEXTURE_2D, 0)
 
 
-proc setModel*(id: int): void =
-  glBindVertexArray(models[id].vao)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, models[id].ebo)
+proc setMesh*(id: int): void =
+  glBindVertexArray(meshes[id].vao)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[id].ebo)
 
 
-proc unsetModel*(): void =
+proc unsetMesh*(): void =
   glBindVertexArray(0)
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
 
 
-proc renderModel*(id: int): void =
-  glDrawElements(GL_TRIANGLES, models[id].indexCount, GL_UNSIGNED_INT, nil)
+proc renderMesh*(id: int): void =
+  glDrawElements(GL_TRIANGLES, meshes[id].indexCount, GL_UNSIGNED_INT, nil)

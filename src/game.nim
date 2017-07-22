@@ -1,31 +1,34 @@
 import
   sdl2,
   input,
-  graphics,
   renderer,
-  states.gameplay
+  game.state
 
 
 var
-  state = gameplay.state
+  currentState = "gameplay"
 
 
-proc initialize*(): void =
-  graphics.initialize(
+proc start*(): void =
+  renderer.initialize(
     title  = "Hello",
     width  = 800,
     height = 600
   )
 
-  renderer.load()
+  currentState.load()
 
 
 proc mainLoop*(): void =
   while not input.exit:
     input.read()
-    state()
-    renderer.render()
+
+    currentState.update()
+
+    renderer.set()
+    renderer.render( currentState.draw() )
+    renderer.unset()
 
 
 proc finish*(): void =
-  graphics.destroy()
+  renderer.finish()

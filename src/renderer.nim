@@ -1,67 +1,47 @@
 import
-  times,
   glm,
-  graphics,
-  graphics.model,
-  graphics.texture,
-  graphics.shader,
-  graphics.matrix,
-  camera,
-  entity
+  game.camera,
+  game.entity,
+  graphics.graphics
 
 
 var
-  quad: Entity
-  myModel: int
   simpleShader: int
   grassTexture: int
 
 
-proc load*(): void =
-  var vertexCoords = @[
-     0.5,  0.5,  0.0,
-    -0.5,  0.5,  0.0,
-    -0.5, -0.5,  0.0,
-     0.5, -0.5,  0.0
-  ]
+proc set*(): void =
+  renderStart()
 
-  var textureCoords = @[
-     1.0, 1.0,
-     0.0, 1.0,
-     0.0, 0.0,
-     1.0, 0.0
-  ]
+  setShader(simpleShader)
+  setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation))
 
-  var vertexIndices = @[
-    0, 1, 2,
-    2, 3, 0
-  ]
-
-  myModel      = model.new(vertexCoords, textureCoords, vertexIndices)
-  simpleShader = shader.new("simple")
-  grassTexture = texture.new("grass")
-
-  quad = Entity(
-    position: vec3f(0.0, 0.0, -3.0),
-    rotation: vec3f(0.0, 0.0, 0.0)
-  )
+  setTexture(grassTexture)
 
 
-proc render*(): void =
-  graphics.renderStart()
+proc render*(entities: seq[Entity]): void =
+  for entity in entities:
+    setMesh(entity.mesh)
+    setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
+    renderMesh(entity.mesh)
+  unsetMesh()
 
-  graphics.setShader(simpleShader)
-  setMat4(simpleShader, "viewMatrix", matrix.view(camera.position, camera.rotation))
 
-  graphics.setTexture(grassTexture)
+proc unset*(): void =
+  unsetShader()
+  unsetTexture()
 
-  graphics.setModel(myModel)
-  setMat4(simpleShader, "modelMatrix", matrix.model(quad.position, quad.rotation))
+  renderEnd()
 
-  graphics.renderModel(myModel)
-  graphics.unsetModel()
 
-  graphics.unsetTexture()
-  graphics.unsetShader()
+proc initialize*(title: cstring, width, height: cint): void =
+  graphics.window.initializeWindow(title, width, height)
+  graphics.window.initializeOpenGl()
 
-  graphics.renderEnd()
+  simpleShader = graphics.shader.new("simple")
+  grassTexture = graphics.texture.new("grass")
+
+
+proc finish*(): void =
+  graphics.mesh.destroyMeshes()
+  graphics.window.destroy()

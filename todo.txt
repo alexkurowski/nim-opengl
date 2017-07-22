@@ -1,17 +1,3 @@
-Create graphics.matrix module, so we can do as follows:
-
-matrix.model(position: vec3f, rotation: vec3f) <- position and rotation of a model
-matrix.view(position: vec3f, rotation: vec3f)  <- position and rotation of the camera
-matrix.perspective(fov: float)                 <- default matrix created for every shader
-
-Gotta move matrix math away from shaders module.
-
-
-
-Move entity module to somewhere else, it does not belong to graphics namespace.
-
-
-
 Create graphics.camera module.
 
 
