@@ -1,8 +1,8 @@
 import
   sdl2,
   input,
-  renderer,
-  game.state
+  graphics,
+  state
 
 
 var
@@ -10,7 +10,7 @@ var
 
 
 proc start*(): void =
-  renderer.initialize(
+  graphics.initialize(
     title  = "Hello",
     width  = 800,
     height = 600
@@ -25,10 +25,10 @@ proc mainLoop*(): void =
 
     currentState.update()
 
-    renderer.set()
-    renderer.render( currentState.draw() )
-    renderer.unset()
+    graphics.set()
+    graphics.render( currentState.draw() )
+    graphics.unset()
 
 
 proc finish*(): void =
-  renderer.finish()
+  graphics.finish()

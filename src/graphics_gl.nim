@@ -2,11 +2,11 @@ import
   sdl2,
   opengl,
   glu,
-  window,
-  mesh,
-  texture,
-  shader,
-  matrix
+  graphics.window,
+  graphics.mesh,
+  graphics.texture,
+  graphics.shader,
+  graphics.matrix
 
 
 export

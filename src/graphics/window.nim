@@ -30,11 +30,6 @@ proc swap*(): void =
   glSwapWindow(window)
 
 
-#
-# INITIALIZATION CODE
-#
-
-
 proc initializeWindow*(title: cstring, width, height: cint): void =
   discard sdl2.init(INIT_EVERYTHING)
 

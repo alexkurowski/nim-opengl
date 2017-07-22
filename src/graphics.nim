@@ -1,8 +1,11 @@
 import
   glm,
   game.camera,
-  game.entity,
-  graphics.graphics
+  game.entity
+
+
+include
+  graphics_gl
 
 
 var
@@ -22,6 +25,7 @@ proc set*(): void =
 proc render*(entities: seq[Entity]): void =
   for entity in entities:
     setMesh(entity.mesh)
+    # TODO: This is very bad for performance though!
     setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
     renderMesh(entity.mesh)
   unsetMesh()

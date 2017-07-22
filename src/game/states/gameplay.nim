@@ -7,7 +7,7 @@ import
 
 
 var
-  quad: Entity
+  quads: seq[Entity] = @[]
 
 
 proc load*(): void =
@@ -30,11 +30,15 @@ proc load*(): void =
     2, 3, 0
   ]
 
-  quad = Entity(
-    position: vec3f(0.0, 0.0, -3.0),
-    rotation: vec3f(0.0, 0.0, 0.0),
-    mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
-  )
+  for i in 0..10:
+    for j in 0..10:
+      quads.add(
+        Entity(
+          position: vec3f(i.float, j.float, -3.0),
+          rotation: vec3f(0.0, 0.0, 0.0),
+          mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
+        )
+      )
 
 
 proc update*(): void =
@@ -54,4 +58,4 @@ proc update*(): void =
 
 
 proc draw*(): seq[Entity] =
-  @[quad]
+  quads

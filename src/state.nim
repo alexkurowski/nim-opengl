@@ -1,6 +1,6 @@
 import
-  entity,
-  states.gameplay
+  game.entity,
+  game.states.gameplay
 
 
 proc load*(state: string): void =
