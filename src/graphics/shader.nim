@@ -1,7 +1,7 @@
 import
   opengl,
   glm,
-  entity,
+  matrix,
   tables
 
 
@@ -77,7 +77,7 @@ proc new*(filename: string): int =
   shaders.add(shader)
 
   glUseProgram(shader.id)
-  var mat = projMatrix()
+  var mat = matrix.projection()
   setMat4(
     result,
     "projMatrix",

@@ -5,12 +5,13 @@ import
   graphics.model,
   graphics.texture,
   graphics.shader,
-  graphics.entity
+  graphics.matrix,
+  camera,
+  entity
 
 
 var
   quad: Entity
-  camera: Entity
   myModel: int
   simpleShader: int
   grassTexture: int
@@ -45,22 +46,17 @@ proc load*(): void =
     rotation: vec3f(0.0, 0.0, 0.0)
   )
 
-  camera = Entity(
-    position: vec3f(0.0, 0.0, 0.0),
-    rotation: vec3f(0.0, 0.0, 0.0)
-  )
-
 
 proc render*(): void =
   graphics.renderStart()
 
   graphics.setShader(simpleShader)
-  simpleShader.setMat4("viewMatrix", camera.viewMatrix)
+  setMat4(simpleShader, "viewMatrix", matrix.view(camera.position, camera.rotation))
 
   graphics.setTexture(grassTexture)
 
   graphics.setModel(myModel)
-  simpleShader.setMat4("modelMatrix", quad.modelMatrix)
+  setMat4(simpleShader, "modelMatrix", matrix.model(quad.position, quad.rotation))
 
   graphics.renderModel(myModel)
   graphics.unsetModel()
