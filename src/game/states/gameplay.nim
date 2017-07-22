@@ -42,14 +42,20 @@ proc load*(): void =
 
 
 proc update*(): void =
+  let speed = 0.01
+
   if input.keys.contains cameraGoForward:
-    camera.position.z -= 0.01
+    camera.position.x += camera.rotation.y.radians.sin * speed
+    camera.position.z -= camera.rotation.y.radians.cos * speed
   if input.keys.contains cameraGoBackward:
-    camera.position.z += 0.01
+    camera.position.x -= camera.rotation.y.radians.sin * speed
+    camera.position.z += camera.rotation.y.radians.cos * speed
   if input.keys.contains cameraGoLeft:
-    camera.position.x -= 0.01
+    camera.position.x -= camera.rotation.y.radians.cos * speed
+    camera.position.z -= camera.rotation.y.radians.sin * speed
   if input.keys.contains cameraGoRight:
-    camera.position.x += 0.01
+    camera.position.x += camera.rotation.y.radians.cos * speed
+    camera.position.z += camera.rotation.y.radians.sin * speed
 
   if input.keys.contains cameraRotateLeft:
     camera.rotation.y -= 0.1
