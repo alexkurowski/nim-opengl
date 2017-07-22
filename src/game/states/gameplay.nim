@@ -42,19 +42,19 @@ proc load*(): void =
 
 
 proc update*(): void =
-  if input.lastKey == 97:
+  if input.keys.contains cameraGoForward:
+    camera.position.z -= 0.01
+  if input.keys.contains cameraGoBackward:
+    camera.position.z += 0.01
+  if input.keys.contains cameraGoLeft:
     camera.position.x -= 0.01
-  if input.lastKey == 100:
+  if input.keys.contains cameraGoRight:
     camera.position.x += 0.01
-  if input.lastKey == 115:
-    camera.position.y -= 0.01
-  if input.lastKey == 119:
-    camera.position.y += 0.01
 
-  if input.lastKey == 101:
-    camera.rotation.y += 0.1
-  if input.lastKey == 113:
+  if input.keys.contains cameraRotateLeft:
     camera.rotation.y -= 0.1
+  if input.keys.contains cameraRotateRight:
+    camera.rotation.y += 0.1
 
 
 proc draw*(): seq[Entity] =

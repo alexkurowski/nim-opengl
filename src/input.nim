@@ -1,23 +1,43 @@
 import
   sdl2,
-  graphics.window
+  tables,
+  graphics.window,
+  common.actions
+
+
+export
+  sdl2,
+  actions
 
 
 var
   event = defaultEvent
+
   exit* = false
 
-  lastKey* = 0
+  lastKey*: Scancode = SDL_SCANCODE_UNKNOWN
+  keys*: set[actions] = {}
+
+  keymap = {
+    SDL_SCANCODE_Q: actions.cameraRotateLeft,
+    SDL_SCANCODE_E: actions.cameraRotateRight,
+    SDL_SCANCODE_W: actions.cameraGoForward,
+    SDL_SCANCODE_S: actions.cameraGoBackward,
+    SDL_SCANCODE_A: actions.cameraGoLeft,
+    SDL_SCANCODE_D: actions.cameraGoRight
+  }.toTable
 
 
-proc keyDown(key: cint): void =
+proc keyDown(key: Scancode): void =
   lastKey = key
-  echo("Keyboard down: " & $key)
+  if keymap.hasKey key:
+    keys.incl keymap[key]
 
 
-proc keyUp(key: cint): void =
-  lastKey = 0
-  echo("Keyboard up: " & $key)
+proc keyUp(key: Scancode): void =
+  lastKey = SDL_SCANCODE_UNKNOWN
+  if keymap.hasKey key:
+    keys.excl keymap[key]
 
 
 proc mouseMotion(x, y: cint): void =
@@ -54,10 +74,10 @@ proc read*(): void =
         )
 
     of KeyDown:
-      keyDown(event.key.keysym.sym)
+      keyDown(event.key.keysym.scancode)
 
     of KeyUp:
-      keyUp(event.key.keysym.sym)
+      keyUp(event.key.keysym.scancode)
 
     of MouseMotion:
       mouseMotion(event.motion.x, event.motion.y)
