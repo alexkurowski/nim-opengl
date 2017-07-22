@@ -42,20 +42,24 @@ proc load*(): void =
 
 
 proc update*(dt: float): void =
-  let speed = 1 * dt
+  let speed = 4f
+
+  var change = vec3f(0.0)
 
   if input.keys.contains cameraGoForward:
-    camera.position.x += camera.rotation.y.radians.sin * speed
-    camera.position.z -= camera.rotation.y.radians.cos * speed
+    change.x += camera.rotation.y.radians.sin * speed
+    change.z -= camera.rotation.y.radians.cos * speed
   if input.keys.contains cameraGoBackward:
-    camera.position.x -= camera.rotation.y.radians.sin * speed
-    camera.position.z += camera.rotation.y.radians.cos * speed
+    change.x -= camera.rotation.y.radians.sin * speed
+    change.z += camera.rotation.y.radians.cos * speed
   if input.keys.contains cameraGoLeft:
-    camera.position.x -= camera.rotation.y.radians.cos * speed
-    camera.position.z -= camera.rotation.y.radians.sin * speed
+    change.x -= camera.rotation.y.radians.cos * speed
+    change.z -= camera.rotation.y.radians.sin * speed
   if input.keys.contains cameraGoRight:
-    camera.position.x += camera.rotation.y.radians.cos * speed
-    camera.position.z += camera.rotation.y.radians.sin * speed
+    change.x += camera.rotation.y.radians.cos * speed
+    change.z += camera.rotation.y.radians.sin * speed
+
+  camera.position += change * dt
 
   if input.keys.contains cameraRotateLeft:
     camera.rotation.y -= 0.1
