@@ -61,7 +61,15 @@ proc update*(dt: float): void =
 
   camera.position += change * dt
 
-  if input.keys.contains cameraRotateLeft:
-    camera.rotation.y -= 0.1
-  if input.keys.contains cameraRotateRight:
-    camera.rotation.y += 0.1
+  camera.rotation.x -= input.mouseDelta.y.float
+  camera.rotation.y -= input.mouseDelta.x.float
+
+  if camera.rotation.x > 80:
+    camera.rotation.x = 80
+  if camera.rotation.x < -80:
+    camera.rotation.x = -80
+
+  while camera.rotation.y < 0:
+    camera.rotation.y += 360;
+  while camera.rotation.y >= 360:
+    camera.rotation.y -= 360;

@@ -1,5 +1,6 @@
 import
   sdl2,
+  glm,
   tables,
   graphics.window,
   common.actions
@@ -27,6 +28,9 @@ var
     SDL_SCANCODE_D: actions.cameraGoRight
   }.toTable
 
+  mousePosition*: Vec2i = vec2i(0)
+  mouseDelta*: Vec2i    = vec2i(0)
+
 
 proc keyDown(key: Scancode): void =
   lastKey = key
@@ -41,7 +45,9 @@ proc keyUp(key: Scancode): void =
 
 
 proc mouseMotion(x, y: cint): void =
-  echo("Mouse move: " & $x & ":" & $y)
+  mouseDelta.x = mousePosition.x - x
+  mouseDelta.y = mousePosition.y - y
+  mousePosition = vec2i(x, y)
 
 
 proc mouseButtonDown(btn: uint8): void =
@@ -61,6 +67,8 @@ proc mouseButtonUp(btn: uint8): void =
 
 
 proc read*(): void =
+  mouseDelta = vec2i(0)
+
   while pollEvent(event):
     case event.kind
     of QuitEvent:
