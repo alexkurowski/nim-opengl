@@ -1,11 +1,13 @@
 import
   sdl2,
+  clock,
   input,
   graphics,
   state
 
 
 var
+
   currentState = "gameplay"
 
 
@@ -23,7 +25,7 @@ proc mainLoop*(): void =
   while not input.exit:
     input.read()
 
-    currentState.update()
+    currentState.update( clock.getDelta() )
 
     graphics.set()
     graphics.render( currentState.draw() )

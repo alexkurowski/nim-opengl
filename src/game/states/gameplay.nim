@@ -7,7 +7,7 @@ import
 
 
 var
-  quads: seq[Entity] = @[]
+  quads*: seq[Entity] = @[]
 
 
 proc load*(): void =
@@ -41,8 +41,8 @@ proc load*(): void =
       )
 
 
-proc update*(): void =
-  let speed = 0.01
+proc update*(dt: float): void =
+  let speed = 1 * dt
 
   if input.keys.contains cameraGoForward:
     camera.position.x += camera.rotation.y.radians.sin * speed
@@ -61,7 +61,3 @@ proc update*(): void =
     camera.rotation.y -= 0.1
   if input.keys.contains cameraRotateRight:
     camera.rotation.y += 0.1
-
-
-proc draw*(): seq[Entity] =
-  quads
