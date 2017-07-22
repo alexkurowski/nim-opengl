@@ -1,6 +1,8 @@
 import
   glm,
   ../../graphics/mesh,
+  ../../input,
+  ../camera,
   ../entity
 
 
@@ -36,7 +38,19 @@ proc load*(): void =
 
 
 proc update*(): void =
-  discard
+  if input.lastKey == 97:
+    camera.position.x -= 0.01
+  if input.lastKey == 100:
+    camera.position.x += 0.01
+  if input.lastKey == 115:
+    camera.position.y -= 0.01
+  if input.lastKey == 119:
+    camera.position.y += 0.01
+
+  if input.lastKey == 101:
+    camera.rotation.y += 0.1
+  if input.lastKey == 113:
+    camera.rotation.y -= 0.1
 
 
 proc draw*(): seq[Entity] =

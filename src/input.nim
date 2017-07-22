@@ -7,12 +7,16 @@ var
   event = defaultEvent
   exit* = false
 
+  lastKey* = 0
+
 
 proc keyDown(key: cint): void =
+  lastKey = key
   echo("Keyboard down: " & $key)
 
 
 proc keyUp(key: cint): void =
+  lastKey = 0
   echo("Keyboard up: " & $key)
 
 
