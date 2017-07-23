@@ -1,9 +1,6 @@
 import
-  glm
-
-
-const
-  fov = 80.0
+  glm,
+  window
 
 
 proc view*(position: Vec3f, rotation: Vec3f): Mat4f =
@@ -54,10 +51,10 @@ proc model*(position: Vec3f, rotation: Vec3f): Mat4f =
   )
 
 
-proc projection*(): Mat4f =
+proc projection*(fov: float): Mat4f =
   perspective(
     fov.radians,
-    800 / 600,
+    window.width.float / window.height.float,
     0.001,
     1000.0
   ).mat4f

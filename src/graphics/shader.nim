@@ -39,10 +39,6 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
   glShaderSource(result, 1.GLsizei, source, nil)
   glCompileShader(result)
 
-  var isSuccess: GLint;
-  glGetShaderiv(result, GL_COMPILE_STATUS, isSuccess.addr)
-  if not isSuccess == 0: echo "TOO BAD"
-
 
 proc initializeLocations(shader: var Shader): void =
   shader.locations = initTable[string, GLint]()
@@ -75,15 +71,6 @@ proc new*(filename: string): int =
 
   result = shaders.len
   shaders.add(shader)
-
-  glUseProgram(shader.id)
-  var mat = matrix.projection()
-  setMat4(
-    result,
-    "projMatrix",
-    mat
-  )
-  glUseProgram(0)
 
 
 proc destroy*() =

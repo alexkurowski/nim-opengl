@@ -77,8 +77,8 @@ proc read*(): void =
     of WindowEvent:
       if event.window.event == WindowEvent_Resized:
         window.resize(
-          width  = event.window.data1,
-          height = event.window.data2
+          w = event.window.data1,
+          h = event.window.data2
         )
 
     of KeyDown:
