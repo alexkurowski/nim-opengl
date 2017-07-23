@@ -35,8 +35,8 @@ proc unsetShader*(): void =
   glUseProgram(0);
 
 
-proc setTexture*(id: int): void =
-  glBindTexture(GL_TEXTURE_2D, textures[id])
+proc setTexture*(): void =
+  glBindTexture(GL_TEXTURE_2D, texture.atlas)
 
 
 proc unsetTexture*(): void =

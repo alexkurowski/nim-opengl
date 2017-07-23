@@ -54,11 +54,11 @@ proc initializeOpenGl*(): void =
   loadExtensions()
   echo("INFO: OpenGL version ", cast[cstring](glGetString(GL_VERSION)))
   glClearColor(0.1, 0.1, 0.1, 1.0)                  # Set background color to black and opaque
-  # glClearDepth(1.0)                                 # Set background depth to farthest
-  # glEnable(GL_DEPTH_TEST)                           # Enable depth testing for z-culling
+  glClearDepth(1.0)                                 # Set background depth to farthest
+  glEnable(GL_DEPTH_TEST)                           # Enable depth testing for z-culling
   # glDepthFunc(GL_LEQUAL)                            # Set the type of depth-test
   # glShadeModel(GL_SMOOTH)                           # Enable smooth shading
-  # glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Nice perspective corrections
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Nice perspective corrections
 
 
 proc destroy*(): void =

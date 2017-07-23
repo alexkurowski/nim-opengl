@@ -10,7 +10,6 @@ include
 
 var
   simpleShader: int
-  grassTexture: int
 
 
 proc set*(): void =
@@ -19,7 +18,7 @@ proc set*(): void =
   setShader(simpleShader)
   setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation))
 
-  setTexture(grassTexture)
+  setTexture()
 
 
 proc render*(entities: seq[Entity]): void =
@@ -42,8 +41,8 @@ proc initialize*(title: cstring, width, height: cint): void =
   graphics.window.initializeWindow(title, width, height)
   graphics.window.initializeOpenGl()
 
+  graphics.texture.initialize()
   simpleShader = graphics.shader.new("simple")
-  grassTexture = graphics.texture.new("grass")
 
 
 proc finish*(): void =

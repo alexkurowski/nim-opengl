@@ -3,17 +3,41 @@ import
   opengl
 
 
+const
+  textureSize = 16
+  atlasSize   = 256
+
+
 var
-  textures*: seq[GLuint] = @[]
+  atlas*: GLuint
 
 
-proc new*(filename: string): int =
-  var id: GLuint
-  glGenTextures(1.GLsizei, id.addr)
+proc new*(id: int): seq[float] =
+  let row = atlasSize div textureSize
+  let x1 = (id mod row) * textureSize
+  let y1 = (id div row) * textureSize
+  let x2 = x1 + textureSize
+  let y2 = y1 + textureSize
 
-  var image = loadBMP("assets/textures/" & filename & ".bmp")
+  let x1f = x1.float / atlasSize.float
+  let x2f = x2.float / atlasSize.float
+  let y1f = y1.float / atlasSize.float
+  let y2f = y2.float / atlasSize.float
 
-  glBindTexture(GL_TEXTURE_2D, id)
+  return @[
+    x2f, y2f,
+    x1f, y2f,
+    x1f, y1f,
+    x2f, y1f
+  ]
+
+
+proc initialize*(): void =
+  glGenTextures(1.GLsizei, atlas.addr)
+
+  var image = loadBMP("assets/textures/texture.bmp")
+
+  glBindTexture(GL_TEXTURE_2D, atlas)
 
   glTexImage2D(
     GL_TEXTURE_2D,
@@ -22,7 +46,7 @@ proc new*(filename: string): int =
     image.w.GLsizei,
     image.h.GLsizei,
     0.GLint,
-    GL_RGB,
+    GL_BGR,
     GL_UNSIGNED_BYTE,
     image.pixels
   )
@@ -33,6 +57,3 @@ proc new*(filename: string): int =
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 
   glBindTexture(GL_TEXTURE_2D, 0)
-
-  result = textures.len
-  textures.add(id)
