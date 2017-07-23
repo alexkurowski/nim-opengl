@@ -25,7 +25,9 @@ var
     SDL_SCANCODE_W: actions.cameraGoForward,
     SDL_SCANCODE_S: actions.cameraGoBackward,
     SDL_SCANCODE_A: actions.cameraGoLeft,
-    SDL_SCANCODE_D: actions.cameraGoRight
+    SDL_SCANCODE_D: actions.cameraGoRight,
+    SDL_SCANCODE_SPACE: actions.cameraGoUp,
+    SDL_SCANCODE_C:     actions.cameraGoDown,
   }.toTable
 
   mousePosition*: Vec2i = vec2i(0)

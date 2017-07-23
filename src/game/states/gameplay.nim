@@ -84,13 +84,16 @@ proc load*(): void =
     22, 23, 20
   ]
 
-  quads.add(
-    Entity(
-      position: vec3f(0.0, 0.0, -3.0),
-      rotation: vec3f(0.0, 0.0, 0.0),
-      mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
-    )
-  )
+  for i in 0..15:
+    for j in 0..15:
+      for k in 0..15:
+        quads.add(
+          Entity(
+            position: vec3f(i.float, -k.float, j.float),
+            rotation: vec3f(0.0, 0.0, 0.0),
+            mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
+          )
+        )
 
 
 proc update*(dt: float): void =
@@ -110,6 +113,11 @@ proc update*(dt: float): void =
   if input.keys.contains cameraGoRight:
     change.x += camera.rotation.y.radians.cos * speed
     change.z += camera.rotation.y.radians.sin * speed
+
+  if input.keys.contains cameraGoUp:
+    change.y += speed
+  if input.keys.contains cameraGoDown:
+    change.y -= speed
 
   camera.position += change * dt
 

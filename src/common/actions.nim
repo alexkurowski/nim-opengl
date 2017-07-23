@@ -5,4 +5,6 @@ type
     cameraGoForward,
     cameraGoBackward,
     cameraGoLeft,
-    cameraGoRight
+    cameraGoRight,
+    cameraGoUp,
+    cameraGoDown,
