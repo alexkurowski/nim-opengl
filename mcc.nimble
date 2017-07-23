@@ -14,4 +14,6 @@ requires "sdl2"
 requires "glm"
 
 task run, "build and run":
-  exec "nim c -o=game --nimcache=build -r src/main.nim"
+  exec "nim c -o=game --nimcache=build --opt:speed -r src/main.nim"
+task release, "build a release version":
+  exec "nim c -o=game --nimcache=build -d:release -r src/main.nim"

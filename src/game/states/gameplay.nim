@@ -84,16 +84,15 @@ proc load*(): void =
     22, 23, 20
   ]
 
-  for i in 0..15:
-    for j in 0..15:
-      for k in 0..5:
-        quads.add(
-          Entity(
-            position: vec3f(i.float, -k.float, j.float),
-            rotation: vec3f(0.0, 0.0, 0.0),
-            mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
-          )
+  for i in 0..100:
+    for j in 0..100:
+      quads.add(
+        Entity(
+          position: vec3f(i.float, -1f, j.float),
+          rotation: vec3f(0.0, 0.0, 0.0),
+          mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
         )
+      )
 
 
 proc update*(dt: float): void =
