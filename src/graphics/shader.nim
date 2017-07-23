@@ -43,7 +43,7 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
 proc initializeLocations(shader: var Shader): void =
   shader.locations = initTable[string, GLint]()
 
-  var locations = ["viewMatrix", "modelMatrix", "projMatrix"]
+  var locations = ["viewMatrix", "modelMatrix"]
   for location in locations:
     shader.locations[location] = glGetUniformLocation(shader.id, location)
 

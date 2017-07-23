@@ -3,8 +3,13 @@ import
   window
 
 
-proc view*(position: Vec3f, rotation: Vec3f): Mat4f =
-  result = mat4f()
+proc view*(position, rotation: Vec3f, fov: float): Mat4f =
+  result = perspective(
+    fov.radians,
+    window.width.float / window.height.float,
+    0.001,
+    1000.0
+  ).mat4f
 
   result = rotate(
     result,
@@ -49,12 +54,3 @@ proc model*(position: Vec3f, rotation: Vec3f): Mat4f =
     vec3f(0.0, 0.0, 1.0),
     rotation.z.radians
   )
-
-
-proc projection*(fov: float): Mat4f =
-  perspective(
-    fov.radians,
-    window.width.float / window.height.float,
-    0.001,
-    1000.0
-  ).mat4f

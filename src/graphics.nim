@@ -16,8 +16,7 @@ proc set*(): void =
   renderStart()
 
   setShader(simpleShader)
-  setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation))
-  setMat4(simpleShader, "projMatrix", graphics.matrix.projection(camera.fov))
+  setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation, camera.fov))
 
   setTexture()
 
