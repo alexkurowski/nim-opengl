@@ -19,8 +19,6 @@ export
 
 proc renderStart*(): void =
   window.clear()
-  # glMatrixMode(GL_MODELVIEW)                          # To operate on model-view matrix
-  # glLoadIdentity()                                    # Reset the model-view matrix
 
 
 proc renderEnd*(): void =

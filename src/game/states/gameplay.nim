@@ -86,7 +86,7 @@ proc load*(): void =
 
   for i in 0..15:
     for j in 0..15:
-      for k in 0..15:
+      for k in 0..5:
         quads.add(
           Entity(
             position: vec3f(i.float, -k.float, j.float),

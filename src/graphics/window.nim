@@ -26,9 +26,6 @@ proc resize*(w, h: int): void =
     w.GLsizei,
     h.GLsizei
   )
-  # glMatrixMode(GL_PROJECTION)                      # To operate on the projection matrix
-  # glLoadIdentity()                                 # Reset the model-view matrix
-  # gluPerspective(45.0, width / height, 0.1, 100.0) # Enable perspective projection with fovy, aspect, zNear and zFar
   discard
 
 
@@ -67,8 +64,7 @@ proc initializeOpenGl*(): void =
   glClearColor(0.1, 0.1, 0.1, 1.0)                  # Set background color to black and opaque
   glClearDepth(1.0)                                 # Set background depth to farthest
   glEnable(GL_DEPTH_TEST)                           # Enable depth testing for z-culling
-  # glDepthFunc(GL_LEQUAL)                            # Set the type of depth-test
-  # glShadeModel(GL_SMOOTH)                           # Enable smooth shading
+  glDepthFunc(GL_LEQUAL)                            # Set the type of depth-test
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Nice perspective corrections
 
   resize(width, height)
