@@ -1,11 +1,15 @@
-import
-  glm,
-  game.camera,
-  game.entity
+import common
 
-
-include
+includes:
   graphics_gl
+
+imports:
+  glm
+  common.types
+
+requires:
+  game.camera
+  game.entities
 
 
 var
@@ -16,7 +20,7 @@ proc set*(): void =
   renderStart()
 
   setShader(simpleShader)
-  setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation, camera.fov))
+  shader.setMat4(simpleShader, "viewMatrix", graphics.matrix.view(camera.position, camera.rotation, camera.fov))
 
   setTexture()
 
@@ -25,7 +29,7 @@ proc render*(entities: seq[Entity]): void =
   for entity in entities:
     setMesh(entity.mesh)
     # TODO: This is very bad for performance though!
-    setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
+    shader.setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
     renderMesh(entity.mesh)
   unsetMesh()
 
@@ -37,11 +41,12 @@ proc unset*(): void =
   renderEnd()
 
 
-proc initialize*(title: cstring, width, height: cint): void =
-  graphics.window.initializeWindow(title, width, height)
+proc initialize*(): void =
+  graphics.window.initializeWindow()
   graphics.window.initializeOpenGl()
 
-  graphics.texture.initialize()
+  graphics.texture.initializeTexture()
+
   simpleShader = graphics.shader.new("simple")
 
 

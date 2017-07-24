@@ -1,13 +1,16 @@
-import
-  sdl2,
-  glm,
-  tables,
-  graphics.window,
+import common
+
+imports:
+  sdl2
+  glm
+  tables
   common.actions
 
+requires:
+  graphics.window
 
-export
-  sdl2,
+exports:
+  sdl2
   actions
 
 
@@ -20,12 +23,12 @@ var
   keys*: set[actions] = {}
 
   keymap = {
-    SDL_SCANCODE_Q: actions.cameraRotateLeft,
-    SDL_SCANCODE_E: actions.cameraRotateRight,
-    SDL_SCANCODE_W: actions.cameraGoForward,
-    SDL_SCANCODE_S: actions.cameraGoBackward,
-    SDL_SCANCODE_A: actions.cameraGoLeft,
-    SDL_SCANCODE_D: actions.cameraGoRight,
+    SDL_SCANCODE_Q:     actions.cameraRotateLeft,
+    SDL_SCANCODE_E:     actions.cameraRotateRight,
+    SDL_SCANCODE_W:     actions.cameraGoForward,
+    SDL_SCANCODE_S:     actions.cameraGoBackward,
+    SDL_SCANCODE_A:     actions.cameraGoLeft,
+    SDL_SCANCODE_D:     actions.cameraGoRight,
     SDL_SCANCODE_SPACE: actions.cameraGoUp,
     SDL_SCANCODE_C:     actions.cameraGoDown,
   }.toTable

@@ -1,5 +1,9 @@
-import
-  game.entity,
+import common
+
+imports:
+  common.types
+
+requires:
   game.states.gameplay
 
 

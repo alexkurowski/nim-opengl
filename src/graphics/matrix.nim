@@ -1,5 +1,9 @@
-import
-  glm,
+import common
+
+imports:
+  glm
+
+requires:
   window
 
 

@@ -1,5 +1,4 @@
-import
-  glm
+import glm
 
 
 var

@@ -1,34 +1,29 @@
-import
-  sdl2,
-  clock,
-  input,
-  graphics,
-  state
+import common
+
+requires:
+  clock
+  input
+  graphics
+  game.state
 
 
 var
-
   currentState = "gameplay"
 
 
 proc start*(): void =
-  graphics.initialize(
-    title  = "Hello",
-    width  = 800,
-    height = 600
-  )
-
-  currentState.load()
+  graphics.initialize()
+  state.load(currentState)
 
 
 proc mainLoop*(): void =
   while not input.exit:
     input.read()
 
-    currentState.update( clock.getDelta() )
+    state.update( currentState, clock.getDelta() )
 
     graphics.set()
-    graphics.render( currentState.draw() )
+    graphics.render( state.draw(currentState) )
     graphics.unset()
 
 

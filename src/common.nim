@@ -1,10 +1,33 @@
 import macros
 
 
-macro require*(libs: varargs[untyped]): untyped =
-  result = newNimNode(nnkStmtList, libs)
+macro includes*(libs: untyped): untyped =
+  result = newStmtList()
   for lib in libs:
-    var node = newNimNode(nnkFromStmt)
-    node.add( lib )
-    node.add( newNilLit() )
-    result.add(node)
+    result.add(
+      newNimNode(nnkIncludeStmt).add(lib)
+    )
+
+
+macro imports*(libs: untyped): untyped =
+  result = newStmtList()
+  for lib in libs:
+    result.add(
+      newNimNode(nnkImportStmt).add(lib)
+    )
+
+
+macro requires*(libs: untyped): untyped =
+  result = newStmtList()
+  for lib in libs:
+    result.add(
+      newNimNode(nnkFromStmt).add(lib, newNilLit())
+    )
+
+
+macro exports*(libs: untyped): untyped =
+  result = newStmtList()
+  for lib in libs:
+    result.add(
+      newNimNode(nnkExportStmt).add(lib)
+    )

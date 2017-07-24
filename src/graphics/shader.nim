@@ -1,7 +1,9 @@
-import
-  opengl,
-  glm,
-  matrix,
+import common
+
+imports:
+  opengl
+  glm
+  matrix
   tables
 
 

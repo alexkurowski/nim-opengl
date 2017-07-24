@@ -1,10 +1,15 @@
-import
-  glm,
-  ../../graphics/mesh,
-  ../../graphics/texture,
-  ../../input,
-  ../camera,
-  ../entity
+import common
+
+imports:
+  glm
+  common.types
+
+requires:
+  input
+  graphics.mesh
+  graphics.texture
+  game.camera
+  game.entities
 
 
 var
@@ -100,22 +105,22 @@ proc update*(dt: float): void =
 
   var change = vec3f(0.0)
 
-  if input.keys.contains cameraGoForward:
+  if input.keys.contains input.cameraGoForward:
     change.x += camera.rotation.y.radians.sin * speed
     change.z -= camera.rotation.y.radians.cos * speed
-  if input.keys.contains cameraGoBackward:
+  if input.keys.contains input.cameraGoBackward:
     change.x -= camera.rotation.y.radians.sin * speed
     change.z += camera.rotation.y.radians.cos * speed
-  if input.keys.contains cameraGoLeft:
+  if input.keys.contains input.cameraGoLeft:
     change.x -= camera.rotation.y.radians.cos * speed
     change.z -= camera.rotation.y.radians.sin * speed
-  if input.keys.contains cameraGoRight:
+  if input.keys.contains input.cameraGoRight:
     change.x += camera.rotation.y.radians.cos * speed
     change.z += camera.rotation.y.radians.sin * speed
 
-  if input.keys.contains cameraGoUp:
+  if input.keys.contains input.cameraGoUp:
     change.y += speed
-  if input.keys.contains cameraGoDown:
+  if input.keys.contains input.cameraGoDown:
     change.y -= speed
 
   camera.position += change * dt

@@ -1,12 +1,15 @@
-import
-  sdl2,
+include common
+
+imports:
+  sdl2
   opengl
+
+requires:
+  config
 
 
 const
   mode = SDL_WINDOW_OPENGL or SDL_WINDOW_RESIZABLE
-  glMajor = 3
-  glMinor = 1
 
 
 var
@@ -37,22 +40,22 @@ proc swap*(): void =
   glSwapWindow(window)
 
 
-proc initializeWindow*(title: cstring, w, h: cint): void =
-  width  = w
-  height = h
+proc initializeWindow*(): void =
+  width  = config.windowWidth
+  height = config.windowHeight
 
   discard sdl2.init(INIT_EVERYTHING)
 
   discard glSetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE)
-  discard glSetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glMajor)
-  discard glSetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, glMinor)
+  discard glSetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, config.glMajor.cint)
+  discard glSetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, config.glMinor.cint)
 
   window = createWindow(
-    title,
+    config.windowTitle.cstring,
     SDL_WINDOWPOS_CENTERED,
     SDL_WINDOWPOS_CENTERED,
-    w,
-    h,
+    width.cint,
+    height.cint,
     mode
   )
   context = glCreateContext(window)

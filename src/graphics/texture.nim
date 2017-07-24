@@ -1,5 +1,7 @@
-import
-  sdl2,
+import common
+
+imports:
+  sdl2
   opengl
 
 
@@ -32,7 +34,7 @@ proc new*(id: int): seq[float] =
   ]
 
 
-proc initialize*(): void =
+proc initializeTexture*(): void =
   glGenTextures(1.GLsizei, atlas.addr)
 
   var image = loadBMP("assets/textures/texture.bmp")

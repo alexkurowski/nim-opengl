@@ -1,5 +1,0 @@
-Create graphics.camera module.
-
-
-
-Rename model into mesh?

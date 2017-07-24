@@ -1,19 +1,22 @@
-import
-  sdl2,
-  opengl,
-  glu,
-  graphics.window,
-  graphics.mesh,
-  graphics.texture,
-  graphics.shader,
+import common
+
+imports:
+  sdl2
+  opengl
+  glu
+
+requires:
+  graphics.window
+  graphics.mesh
+  graphics.texture
+  graphics.shader
   graphics.matrix
 
-
-export
-  window,
-  mesh,
-  texture,
-  shader,
+exports:
+  window
+  mesh
+  texture
+  shader
   matrix
 
 
@@ -26,7 +29,7 @@ proc renderEnd*(): void =
 
 
 proc setShader*(id: int): void =
-  glUseProgram(shaders[id].id);
+  glUseProgram(shader.shaders[id].id);
 
 
 proc unsetShader*(): void =
@@ -42,8 +45,8 @@ proc unsetTexture*(): void =
 
 
 proc setMesh*(id: int): void =
-  glBindVertexArray(meshes[id].vao)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[id].ebo)
+  glBindVertexArray(mesh.meshes[id].vao)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.meshes[id].ebo)
 
 
 proc unsetMesh*(): void =
@@ -52,4 +55,4 @@ proc unsetMesh*(): void =
 
 
 proc renderMesh*(id: int): void =
-  glDrawElements(GL_TRIANGLES, meshes[id].indexCount, GL_UNSIGNED_INT, nil)
+  glDrawElements(GL_TRIANGLES, mesh.meshes[id].indexCount, GL_UNSIGNED_INT, nil)
