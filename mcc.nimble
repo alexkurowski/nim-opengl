@@ -7,11 +7,16 @@ license       = "GPLv3"
 
 skipExt       = @["nim"]
 
+
 # Dependencies
 
 requires "nim >= 0.17.0"
 requires "sdl2"
 requires "glm"
+requires "perlin"
+
+
+# Jobs
 
 task run, "build and run":
   exec "nim c -o=game --nimcache=build -p:. -r src/main.nim"

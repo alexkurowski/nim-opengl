@@ -5,6 +5,9 @@ imports:
   common.types
 
 requires:
+  random
+  perlin
+  math
   input
   graphics.mesh
   graphics.texture
@@ -89,11 +92,16 @@ proc load*(): void =
     22, 23, 20
   ]
 
+  random.randomize()
+  let noise = perlin.newNoise()
+  var height: float
+
   for i in 0..100:
     for j in 0..100:
+      height = math.floor( perlin.simplex(noise, i, j) * 3 ) * -1.0
       quads.add(
         Entity(
-          position: vec3f(i.float, -1f, j.float),
+          position: vec3f(i.float, height, j.float),
           rotation: vec3f(0.0, 0.0, 0.0),
           mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
         )
@@ -105,22 +113,22 @@ proc update*(dt: float): void =
 
   var change = vec3f(0.0)
 
-  if input.keys.contains input.cameraGoForward:
+  if input.keys.contains cameraGoForward:
     change.x += camera.rotation.y.radians.sin * speed
     change.z -= camera.rotation.y.radians.cos * speed
-  if input.keys.contains input.cameraGoBackward:
+  if input.keys.contains cameraGoBackward:
     change.x -= camera.rotation.y.radians.sin * speed
     change.z += camera.rotation.y.radians.cos * speed
-  if input.keys.contains input.cameraGoLeft:
+  if input.keys.contains cameraGoLeft:
     change.x -= camera.rotation.y.radians.cos * speed
     change.z -= camera.rotation.y.radians.sin * speed
-  if input.keys.contains input.cameraGoRight:
+  if input.keys.contains cameraGoRight:
     change.x += camera.rotation.y.radians.cos * speed
     change.z += camera.rotation.y.radians.sin * speed
 
-  if input.keys.contains input.cameraGoUp:
+  if input.keys.contains cameraGoUp:
     change.y += speed
-  if input.keys.contains input.cameraGoDown:
+  if input.keys.contains cameraGoDown:
     change.y -= speed
 
   camera.position += change * dt

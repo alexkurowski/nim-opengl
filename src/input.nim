@@ -4,13 +4,12 @@ imports:
   sdl2
   glm
   tables
-  common.actions
+  common.types
 
 requires:
   graphics.window
 
 exports:
-  sdl2
   actions
 
 
