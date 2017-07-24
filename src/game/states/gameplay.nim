@@ -13,6 +13,7 @@ requires:
   graphics.texture
   graphics.matrix
   graphics.window
+  physics.ray
   game.camera
   game.entities
 
@@ -153,14 +154,7 @@ proc update*(dt: float): void =
     camera.rotation.y -= 360;
 
   # RAY CASTING
-  let mouseX = (input.mousePosition.x.float * 2f) / window.width.float - 1f
-  let mouseY = 1f - (input.mousePosition.y.float * 2f) / window.height.float
-  let rayClip = vec4f(mouseX, mouseY, -1f, 1f)
-  var rayEye  = inverse(matrix.projection(camera.fov)) * rayClip
-  rayEye.z = -1f
-  rayEye.w = 0f
-  var rayWorld = (inverse(matrix.view(camera.position, camera.rotation)) * ray_eye).xyz
-  rayWorld = rayWorld.normalize
+  let rayWorld = ray.castFromScreen(input.mousePosition)
 
   if camera.position.y > 0 and rayWorld.y < 0: # if camera above 0 plane and mouse point looks down
     var point = camera.position
