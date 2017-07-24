@@ -4,6 +4,7 @@ imports:
   common.types
 
 requires:
+  graphics
   game.states.gameplay
 
 
@@ -19,7 +20,7 @@ proc update*(state: string, dt: float): void =
   else: discard
 
 
-proc draw*(state: string): seq[Entity] =
+proc draw*(state: string): void =
   case state
-  of "gameplay": gameplay.quads
-  else: @[]
+  of "gameplay": graphics.render(gameplay.quads, gameplay.selected)
+  else: discard

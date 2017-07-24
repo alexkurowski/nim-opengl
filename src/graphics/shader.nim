@@ -24,6 +24,13 @@ proc setFloat*(id: int, loc: string, value: float): void =
   )
 
 
+proc setBool*(id: int, loc: string, value: bool): void =
+  glUniform1i(
+    shaders[id].locations[loc],
+    value.GLint
+  )
+
+
 proc setMat4*(id: int, loc: string, value: Mat4f): void =
   var mat = value
 
@@ -45,7 +52,7 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
 proc initializeLocations(shader: var Shader): void =
   shader.locations = initTable[string, GLint]()
 
-  var locations = ["viewMatrix", "modelMatrix"]
+  var locations = ["projViewMatrix", "modelMatrix", "selected"]
   for location in locations:
     shader.locations[location] = glGetUniformLocation(shader.id, location)
 

@@ -7,13 +7,17 @@ requires:
   window
 
 
-proc view*(position, rotation: Vec3f, fov: float): Mat4f =
+proc projection*(fov: float): Mat4f =
   result = perspective(
     fov.radians,
     window.width.float / window.height.float,
     0.001,
     1000.0
   ).mat4f
+
+
+proc view*(position, rotation: Vec3f): Mat4f =
+  result = mat4f()
 
   result = rotate(
     result,
@@ -34,6 +38,10 @@ proc view*(position, rotation: Vec3f, fov: float): Mat4f =
   )
 
   result = translate(result, -position)
+
+
+proc projView*(position, rotation: Vec3f, fov: float): Mat4f =
+  result = projection(fov) * view(position, rotation)
 
 
 proc model*(position: Vec3f, rotation: Vec3f): Mat4f =

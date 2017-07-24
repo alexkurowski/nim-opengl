@@ -23,7 +23,7 @@ proc mainLoop*(): void =
     state.update( currentState, clock.getDelta() )
 
     graphics.set()
-    graphics.render( state.draw(currentState) )
+    state.draw(currentState)
     graphics.unset()
 
 

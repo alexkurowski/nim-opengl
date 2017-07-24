@@ -11,12 +11,15 @@ requires:
   input
   graphics.mesh
   graphics.texture
+  graphics.matrix
+  graphics.window
   game.camera
   game.entities
 
 
 var
   quads*: seq[Entity] = @[]
+  selected*: int
 
 
 proc load*(): void =
@@ -96,9 +99,10 @@ proc load*(): void =
   let noise = perlin.newNoise()
   var height: float
 
-  for i in 0..100:
-    for j in 0..100:
+  for i in 0..31:
+    for j in 0..31:
       height = math.floor( perlin.simplex(noise, i, j) * 3 ) * -1.0
+      height = -1f
       quads.add(
         Entity(
           position: vec3f(i.float, height, j.float),
@@ -109,6 +113,7 @@ proc load*(): void =
 
 
 proc update*(dt: float): void =
+  # MOVEMENT
   let speed = 4f
 
   var change = vec3f(0.0)
@@ -133,6 +138,7 @@ proc update*(dt: float): void =
 
   camera.position += change * dt
 
+  # ROTATION
   camera.rotation.x -= input.mouseDelta.y.float
   camera.rotation.y -= input.mouseDelta.x.float
 
@@ -145,3 +151,20 @@ proc update*(dt: float): void =
     camera.rotation.y += 360;
   while camera.rotation.y >= 360:
     camera.rotation.y -= 360;
+
+  # RAY CASTING
+  let mouseX = (input.mousePosition.x.float * 2f) / window.width.float - 1f
+  let mouseY = 1f - (input.mousePosition.y.float * 2f) / window.height.float
+  let rayClip = vec4f(mouseX, mouseY, -1f, 1f)
+  var rayEye  = inverse(matrix.projection(camera.fov)) * rayClip
+  rayEye.z = -1f
+  rayEye.w = 0f
+  var rayWorld = (inverse(matrix.view(camera.position, camera.rotation)) * ray_eye).xyz
+  rayWorld = rayWorld.normalize
+
+  if camera.position.y > 0 and rayWorld.y < 0: # if camera above 0 plane and mouse point looks down
+    var point = camera.position
+    let distance = -1f * ( point.y / rayWorld.y )
+    let x = ( point.x + rayWorld.x * distance ).floor
+    let y = ( point.z + rayWorld.z * distance ).floor
+    selected = ( x * 32 + y ).int
