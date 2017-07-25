@@ -1,4 +1,7 @@
-import glm
+import common
+
+imports:
+  glm
 
 
 var

@@ -6,36 +6,44 @@ imports:
   matrix
   tables
 
+requires:
+  config
+
 
 type
-  Shader = ref object
+  Shader* = ref object
     id*: GLuint
     locations: Table[string, GLint]
 
 
 var
-  shaders*: seq[Shader] = @[]
+  current: Shader
+  simple*: Shader
 
 
-proc setFloat*(id: int, loc: string, value: float): void =
+proc use*(shader: Shader): void =
+  current = shader
+
+
+proc setFloat*(loc: string, value: float): void =
   glUniform1f(
-    shaders[id].locations[loc],
+    current.locations[loc],
     value.GLfloat
   )
 
 
-proc setBool*(id: int, loc: string, value: bool): void =
+proc setBool*(loc: string, value: bool): void =
   glUniform1i(
-    shaders[id].locations[loc],
+    current.locations[loc],
     value.GLint
   )
 
 
-proc setMat4*(id: int, loc: string, value: Mat4f): void =
+proc setMat4*(loc: string, value: Mat4f): void =
   var mat = value
 
   glUniformMatrix4fv(
-    shaders[id].locations[loc],
+    current.locations[loc],
     1.GLsizei,
     GL_FALSE,
     mat.caddr
@@ -49,15 +57,7 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
   glCompileShader(result)
 
 
-proc initializeLocations(shader: var Shader): void =
-  shader.locations = initTable[string, GLint]()
-
-  var locations = ["projViewMatrix", "modelMatrix", "selected"]
-  for location in locations:
-    shader.locations[location] = glGetUniformLocation(shader.id, location)
-
-
-proc new*(filename: string): int =
+proc create(filename: string, locations: seq[string]): Shader =
   var shader = Shader()
 
   var vertexSrc   = [readFile("assets/shaders/" & filename & ".glslv")].allocCStringArray
@@ -76,12 +76,16 @@ proc new*(filename: string): int =
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
-  initializeLocations(shader)
+  shader.locations = initTable[string, GLint]()
+  for location in locations:
+    shader.locations[location] = glGetUniformLocation(shader.id, location)
 
-  result = shaders.len
-  shaders.add(shader)
+  result = shader
+
+
+proc initialize*(): void =
+  simple = create("simple", config.shaderLocations["simple"])
 
 
 proc destroy*() =
-  for shader in shaders:
-    glDeleteProgram(shader.id)
+  glDeleteProgram(simple.id)

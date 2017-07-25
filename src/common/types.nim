@@ -2,7 +2,7 @@ import glm
 
 
 type
-  actions* = enum
+  actions* {.pure.} = enum
     cameraRotateLeft,
     cameraRotateRight,
     cameraGoForward,

@@ -12,28 +12,24 @@ requires:
   game.entities
 
 
-var
-  simpleShader: int
-
-
 proc set*(): void =
   renderStart()
 
-  setShader(simpleShader)
-  shader.setMat4(simpleShader, "projViewMatrix", graphics.matrix.projView(camera.position, camera.rotation, camera.fov))
-
   setTexture()
+  setShader(shader.simple)
 
 
 proc render*(entities: seq[Entity]): void =
+  shader.setMat4("projViewMatrix", graphics.matrix.projView(camera.position, camera.rotation, camera.fov))
+
   for entity in entities:
     setMesh(entity.mesh)
-    shader.setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
+    shader.setMat4("modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
     renderMesh(entity.mesh)
-  unsetMesh()
 
 
 proc unset*(): void =
+  unsetMesh()
   unsetShader()
   unsetTexture()
 
@@ -44,10 +40,9 @@ proc initialize*(): void =
   graphics.window.initializeWindow()
   graphics.window.initializeOpenGl()
 
-  graphics.mesh.initialize()
+  graphics.shader.initialize()
   graphics.texture.initialize()
-
-  simpleShader = graphics.shader.new("simple")
+  graphics.mesh.initialize()
 
 
 proc finish*(): void =

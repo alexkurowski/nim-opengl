@@ -4,6 +4,9 @@ imports:
   sdl2
   opengl
 
+requires:
+  config
+
 
 const
   textureSize = 16
@@ -37,7 +40,7 @@ proc new*(id: int): seq[float] =
 proc initialize*(): void =
   glGenTextures(1.GLsizei, atlas.addr)
 
-  var image = loadBMP("assets/textures/texture.bmp")
+  var image = loadBMP("assets/textures/" & config.textureFilename)
 
   glBindTexture(GL_TEXTURE_2D, atlas)
 
@@ -59,3 +62,7 @@ proc initialize*(): void =
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 
   glBindTexture(GL_TEXTURE_2D, 0)
+
+
+proc destroy*(): void =
+  glDeleteTextures(1.GLSizei, atlas.addr)

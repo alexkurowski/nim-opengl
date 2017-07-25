@@ -39,22 +39,22 @@ proc update*(dt: float): void =
 
   var change = vec3f(0.0)
 
-  if input.keys.contains cameraGoForward:
+  if input.keys.contains actions.cameraGoForward:
     change.x += camera.rotation.y.radians.sin * speed
     change.z -= camera.rotation.y.radians.cos * speed
-  if input.keys.contains cameraGoBackward:
+  if input.keys.contains actions.cameraGoBackward:
     change.x -= camera.rotation.y.radians.sin * speed
     change.z += camera.rotation.y.radians.cos * speed
-  if input.keys.contains cameraGoLeft:
+  if input.keys.contains actions.cameraGoLeft:
     change.x -= camera.rotation.y.radians.cos * speed
     change.z -= camera.rotation.y.radians.sin * speed
-  if input.keys.contains cameraGoRight:
+  if input.keys.contains actions.cameraGoRight:
     change.x += camera.rotation.y.radians.cos * speed
     change.z += camera.rotation.y.radians.sin * speed
 
-  if input.keys.contains cameraGoUp:
+  if input.keys.contains actions.cameraGoUp:
     change.y += speed
-  if input.keys.contains cameraGoDown:
+  if input.keys.contains actions.cameraGoDown:
     change.y -= speed
 
   camera.position += change * dt
@@ -63,10 +63,10 @@ proc update*(dt: float): void =
   camera.rotation.x -= input.mouseDelta.y.float
   camera.rotation.y -= input.mouseDelta.x.float
 
-  if camera.rotation.x > 80:
-    camera.rotation.x = 80
-  if camera.rotation.x < -80:
-    camera.rotation.x = -80
+  if camera.rotation.x > 90:
+    camera.rotation.x = 90
+  if camera.rotation.x < -90:
+    camera.rotation.x = -90
 
   while camera.rotation.y < 0:
     camera.rotation.y += 360;
