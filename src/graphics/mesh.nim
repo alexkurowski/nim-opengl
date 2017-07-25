@@ -93,3 +93,10 @@ proc destroyMeshes*() =
   for mesh in meshes:
     glDeleteVertexArrays(1, mesh.vao.addr)
     glDeleteBuffers(mesh.vboList.len.GLsizei, mesh.vboList[0].addr)
+
+
+proc initialize*(): void =
+  # TODO: Create all possible meshes here
+  # `proc new` then should return an id of the specific mesh
+  # from a list and not create anything new
+  discard

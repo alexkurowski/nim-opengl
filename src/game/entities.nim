@@ -9,8 +9,8 @@ requires:
   graphics.texture
 
 
-proc new*(list: var seq[Entity], position, rotation: Vec3f, meshType: string): void =
-  var vertexCoords = @[
+proc cubeMesh(): int =
+  let vertexCoords = @[
     # back
     1.0, 0.0, 0.0,
     0.0, 0.0, 0.0,
@@ -62,7 +62,7 @@ proc new*(list: var seq[Entity], position, rotation: Vec3f, meshType: string): v
   for i in texture.new(2):
     textureCoords.add(i)
 
-  var vertexIndices = @[
+  let vertexIndices = @[
     0, 1, 2,
     2, 3, 0,
 
@@ -82,10 +82,20 @@ proc new*(list: var seq[Entity], position, rotation: Vec3f, meshType: string): v
     22, 23, 20
   ]
 
+  mesh.new(vertexCoords, textureCoords, vertexIndices)
+
+
+proc new*(list: var seq[Entity], position, rotation: Vec3f, meshType: string): void =
+  var mesh: int;
+
+  case meshType
+  of "cube": mesh = cubeMesh()
+  else: discard
+
   list.add(
     Entity(
       position: position,
       rotation: rotation,
-      mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
+      mesh: mesh
     )
   )

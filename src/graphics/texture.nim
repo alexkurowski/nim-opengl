@@ -34,7 +34,7 @@ proc new*(id: int): seq[float] =
   ]
 
 
-proc initializeTexture*(): void =
+proc initialize*(): void =
   glGenTextures(1.GLsizei, atlas.addr)
 
   var image = loadBMP("assets/textures/texture.bmp")

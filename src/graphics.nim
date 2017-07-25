@@ -44,7 +44,8 @@ proc initialize*(): void =
   graphics.window.initializeWindow()
   graphics.window.initializeOpenGl()
 
-  graphics.texture.initializeTexture()
+  graphics.mesh.initialize()
+  graphics.texture.initialize()
 
   simpleShader = graphics.shader.new("simple")
 

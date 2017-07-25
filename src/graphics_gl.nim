@@ -12,13 +12,6 @@ requires:
   graphics.shader
   graphics.matrix
 
-exports:
-  window
-  mesh
-  texture
-  shader
-  matrix
-
 
 proc renderStart*(): void =
   window.clear()
