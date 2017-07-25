@@ -7,109 +7,29 @@ imports:
 requires:
   random
   perlin
-  math
   input
-  graphics.mesh
-  graphics.texture
-  graphics.matrix
-  graphics.window
   physics.ray
   game.camera
   game.entities
 
 
 var
-  quads*: seq[Entity] = @[]
-  selected*: int
+  entityList*: seq[Entity] = @[]
 
 
 proc load*(): void =
-  var vertexCoords = @[
-    # back
-    1.0, 0.0, 0.0,
-    0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0,
-    1.0, 1.0, 0.0,
-
-    # right
-    1.0, 0.0, 1.0,
-    1.0, 0.0, 0.0,
-    1.0, 1.0, 0.0,
-    1.0, 1.0, 1.0,
-
-    # front
-    0.0, 0.0, 1.0,
-    1.0, 0.0, 1.0,
-    1.0, 1.0, 1.0,
-    0.0, 1.0, 1.0,
-
-    # left
-    0.0, 0.0, 0.0,
-    0.0, 0.0, 1.0,
-    0.0, 1.0, 1.0,
-    0.0, 1.0, 0.0,
-
-    # top
-    0.0, 1.0, 1.0,
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 0.0,
-    0.0, 1.0, 0.0,
-
-    # bottom
-    0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0,
-    1.0, 0.0, 1.0,
-    0.0, 0.0, 1.0
-  ]
-
-  var textureCoords: seq[float] = @[]
-  # add 4 sides
-  for _ in 1..4:
-    for i in texture.new(1):
-      textureCoords.add(i)
-
-  # add 1 top
-  for i in texture.new(0):
-    textureCoords.add(i)
-
-  # add 1 bottom
-  for i in texture.new(2):
-    textureCoords.add(i)
-
-  var vertexIndices = @[
-    0, 1, 2,
-    2, 3, 0,
-
-    4, 5, 6,
-    6, 7, 4,
-
-    8, 9, 10,
-    10, 11, 8,
-
-    12, 13, 14,
-    14, 15, 12,
-
-    16, 17, 18,
-    18, 19, 16,
-
-    20, 21, 22,
-    22, 23, 20
-  ]
-
   random.randomize()
   let noise = perlin.newNoise()
   var height: float
 
   for i in 0..31:
     for j in 0..31:
-      height = math.floor( perlin.simplex(noise, i, j) * 3 ) * -1.0
-      height = -1f
-      quads.add(
-        Entity(
-          position: vec3f(i.float, height, j.float),
-          rotation: vec3f(0.0, 0.0, 0.0),
-          mesh: mesh.new(vertexCoords, textureCoords, vertexIndices)
-        )
+      height = ( perlin.simplex(noise, i.float / 4, j.float / 4) * 12 ) * -1.0
+      entities.new(
+        list = entityList,
+        position = vec3f(i.float, height, j.float),
+        rotation = vec3f(0.0, 0.0, 0.0),
+        meshType = "cube"
       )
 
 
@@ -161,4 +81,4 @@ proc update*(dt: float): void =
     let distance = -1f * ( point.y / rayWorld.y )
     let x = ( point.x + rayWorld.x * distance ).floor
     let y = ( point.z + rayWorld.z * distance ).floor
-    selected = ( x * 32 + y ).int
+    let selectedId = ( x * 32 + y ).int

@@ -7,23 +7,20 @@ requires:
   game.state
 
 
-var
-  currentState = "gameplay"
-
-
 proc start*(): void =
   graphics.initialize()
-  state.load(currentState)
+
+  state.set("gameplay")
 
 
 proc mainLoop*(): void =
   while not input.exit:
     input.read()
 
-    state.update( currentState, clock.getDelta() )
+    state.update( clock.getDelta() )
 
     graphics.set()
-    state.draw(currentState)
+    state.draw()
     graphics.unset()
 
 

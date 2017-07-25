@@ -5,22 +5,28 @@ imports:
 
 requires:
   graphics
-  game.states.gameplay
+  game.states.gameplay.gameplay_state as gameplay
 
 
-proc load*(state: string): void =
-  case state
+var
+  currentState: string
+
+
+proc set*(newState: string): void =
+  currentState = newState
+
+  case currentState
   of "gameplay": gameplay.load()
   else: discard
 
 
-proc update*(state: string, dt: float): void =
-  case state
+proc update*(dt: float): void =
+  case currentState
   of "gameplay": gameplay.update(dt)
   else: discard
 
 
-proc draw*(state: string): void =
-  case state
-  of "gameplay": graphics.render(gameplay.quads, gameplay.selected)
+proc draw*(): void =
+  case currentState
+  of "gameplay": graphics.render(gameplay.entityList)
   else: discard

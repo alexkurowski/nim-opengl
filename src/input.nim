@@ -1,4 +1,4 @@
-import common
+include common
 
 imports:
   sdl2

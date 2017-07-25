@@ -25,14 +25,9 @@ proc set*(): void =
   setTexture()
 
 
-proc render*(entities: seq[Entity], selected: int): void =
-  for i, entity in entities:
-    if i == selected:
-      shader.setBool(simpleShader, "selected", true)
-    else:
-      shader.setBool(simpleShader, "selected", false)
+proc render*(entities: seq[Entity]): void =
+  for entity in entities:
     setMesh(entity.mesh)
-    # TODO: This is very bad for performance though!
     shader.setMat4(simpleShader, "modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
     renderMesh(entity.mesh)
   unsetMesh()

@@ -1,0 +1,11 @@
+game.state ::
+Make a macro that will create a case-of chain out of files in src/game/states/ folder
+
+
+graphics.mesh ::
+Model loading from a file
+
+
+gameplay ::
+Add chunks of cubes for the world rendering
+Add LOD variable to chunks and render chunk meshes appropriately
