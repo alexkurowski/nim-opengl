@@ -55,7 +55,7 @@ proc mouseButtonDown(btn: uint8): void =
   case btn
   of 1: echo("Mouse button down: left")
   of 2: echo("Mouse button down: middle")
-  of 3: echo("Mouse button down: right")
+  of 3: keys.incl actions.cameraDrag
   else: discard
 
 
@@ -63,7 +63,7 @@ proc mouseButtonUp(btn: uint8): void =
   case btn
   of 1: echo("Mouse button up: left")
   of 2: echo("Mouse button up: middle")
-  of 3: echo("Mouse button up: right")
+  of 3: keys.excl actions.cameraDrag
   else: discard
 
 
@@ -98,3 +98,7 @@ proc read*(): void =
       mouseButtonUp(event.button.button)
 
     else: discard
+
+
+proc isDown*(action: actions): bool =
+  keys.contains action

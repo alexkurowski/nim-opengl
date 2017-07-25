@@ -10,18 +10,25 @@ requires:
 var
   position*: Vec3f = vec3f(0.0, 0.0, 0.0)
   rotation*: Vec3f = vec3f(0.0, 0.0, 0.0)
+  distance*: float = 2
   fov*: float = 80.0
   projection*: Mat4f
   view*: Mat4f
 
 
 proc updateMatrices(): void =
+  # TODO: rework rotation value to get a lookat normalized vector
   projection = matrix.projection(fov)
   view = matrix.view(position, rotation)
 
 
 proc move*(change: Vec3f): void =
-  camera.position += change
+  position += change
+  updateMatrices()
+
+
+proc moveTo*(newPosition: Vec3f): void =
+  position = newPosition
   updateMatrices()
 
 

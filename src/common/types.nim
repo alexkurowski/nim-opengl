@@ -11,6 +11,7 @@ type
     cameraGoRight,
     cameraGoUp,
     cameraGoDown,
+    cameraDrag,
 
 
   Entity* = ref object
