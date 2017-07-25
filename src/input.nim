@@ -9,9 +9,6 @@ imports:
 requires:
   graphics.window
 
-exports:
-  actions
-
 
 var
   event = defaultEvent
