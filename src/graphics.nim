@@ -20,7 +20,7 @@ proc set*(): void =
 
 
 proc render*(entities: seq[Entity]): void =
-  shader.setMat4("projViewMatrix", graphics.matrix.projView(camera.position, camera.rotation, camera.fov))
+  shader.setMat4("projViewMatrix", camera.projection * camera.view)
 
   for entity in entities:
     setMesh(entity.mesh)

@@ -40,10 +40,6 @@ proc view*(position, rotation: Vec3f): Mat4f =
   result = translate(result, -position)
 
 
-proc projView*(position, rotation: Vec3f, fov: float): Mat4f =
-  result = projection(fov) * view(position, rotation)
-
-
 proc model*(position: Vec3f, rotation: Vec3f): Mat4f =
   result = mat4f()
 

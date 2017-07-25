@@ -57,34 +57,34 @@ proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
   glCompileShader(result)
 
 
-proc create(filename: string, locations: seq[string]): Shader =
-  var shader = Shader()
+proc create(typeName: string): Shader =
+  result = Shader()
 
-  var vertexSrc   = [readFile("assets/shaders/" & filename & ".glslv")].allocCStringArray
-  var fragmentSrc = [readFile("assets/shaders/" & filename & ".glslf")].allocCStringArray
+  var vertexSrc   = [readFile("assets/shaders/" & typeName & ".glslv")].allocCStringArray
+  var fragmentSrc = [readFile("assets/shaders/" & typeName & ".glslf")].allocCStringArray
 
   var vertexShaderID   = compileShader(vertexSrc, GL_VERTEX_SHADER)
   var fragmentShaderID = compileShader(fragmentSrc, GL_FRAGMENT_SHADER)
 
-  shader.id = glCreateProgram()
+  result.id = glCreateProgram()
 
-  glAttachShader(shader.id, vertexShaderID)
-  glAttachShader(shader.id, fragmentShaderID)
+  glAttachShader(result.id, vertexShaderID)
+  glAttachShader(result.id, fragmentShaderID)
 
-  glLinkProgram(shader.id)
+  glLinkProgram(result.id)
 
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
-  shader.locations = initTable[string, GLint]()
-  for location in locations:
-    shader.locations[location] = glGetUniformLocation(shader.id, location)
+  let locations = config.shaderLocations[typeName]
 
-  result = shader
+  result.locations = initTable[string, GLint]()
+  for location in locations:
+    result.locations[location] = glGetUniformLocation(result.id, location)
 
 
 proc initialize*(): void =
-  simple = create("simple", config.shaderLocations["simple"])
+  simple = create("simple")
 
 
 proc destroy*() =

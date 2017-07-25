@@ -18,6 +18,9 @@ var
 
 
 proc load*(): void =
+  camera.position.x = 10.5
+  camera.position.z = 10.5
+
   random.randomize()
   let noise = perlin.newNoise()
   var height: float
@@ -33,45 +36,36 @@ proc load*(): void =
       )
 
 
-proc update*(dt: float): void =
-  # MOVEMENT
-  let speed = 4f
-
+proc cameraMovement(dt: float): void =
   var change = vec3f(0.0)
 
   if input.keys.contains actions.cameraGoForward:
-    change.x += camera.rotation.y.radians.sin * speed
-    change.z -= camera.rotation.y.radians.cos * speed
+    change.x += camera.rotation.y.radians.sin
+    change.z -= camera.rotation.y.radians.cos
   if input.keys.contains actions.cameraGoBackward:
-    change.x -= camera.rotation.y.radians.sin * speed
-    change.z += camera.rotation.y.radians.cos * speed
+    change.x -= camera.rotation.y.radians.sin
+    change.z += camera.rotation.y.radians.cos
   if input.keys.contains actions.cameraGoLeft:
-    change.x -= camera.rotation.y.radians.cos * speed
-    change.z -= camera.rotation.y.radians.sin * speed
+    change.x -= camera.rotation.y.radians.cos
+    change.z -= camera.rotation.y.radians.sin
   if input.keys.contains actions.cameraGoRight:
-    change.x += camera.rotation.y.radians.cos * speed
-    change.z += camera.rotation.y.radians.sin * speed
+    change.x += camera.rotation.y.radians.cos
+    change.z += camera.rotation.y.radians.sin
 
   if input.keys.contains actions.cameraGoUp:
-    change.y += speed
+    change.y += 1
   if input.keys.contains actions.cameraGoDown:
-    change.y -= speed
+    change.y -= 1
 
-  camera.position += change * dt
+  if change.length != 0:
+    let speed = 4f
+    camera.move(change.normalize * speed * dt)
 
-  # ROTATION
-  camera.rotation.x -= input.mouseDelta.y.float
-  camera.rotation.y -= input.mouseDelta.x.float
+  camera.rotate(input.mouseDelta.y.float, input.mouseDelta.x.float)
 
-  if camera.rotation.x > 90:
-    camera.rotation.x = 90
-  if camera.rotation.x < -90:
-    camera.rotation.x = -90
 
-  while camera.rotation.y < 0:
-    camera.rotation.y += 360;
-  while camera.rotation.y >= 360:
-    camera.rotation.y -= 360;
+proc update*(dt: float): void =
+  cameraMovement(dt)
 
   # RAY CASTING
   let rayWorld = ray.castFromScreen(input.mousePosition)
