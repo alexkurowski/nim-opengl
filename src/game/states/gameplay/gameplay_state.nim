@@ -22,7 +22,7 @@ var
 
 
 proc load*(): void =
-  camera.moveTo vec3f(10.5, -2f, 10.5)
+  camera.moveTo vec3f(10, -2, 10)
 
   random.randomize()
   let noise = perlin.newNoise()

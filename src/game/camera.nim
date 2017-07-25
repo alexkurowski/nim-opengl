@@ -17,9 +17,14 @@ var
 
 
 proc updateMatrices(): void =
-  # TODO: rework rotation value to get a lookat normalized vector
+  let positionAdd = vec3f(
+    0.5 - rotation.y.radians.sin * distance,
+    0,
+    0.5 + rotation.y.radians.cos * distance
+  )
+
   projection = matrix.projection(fov)
-  view = matrix.view(position, rotation)
+  view = matrix.view(position + positionAdd, rotation)
 
 
 proc move*(change: Vec3f): void =
