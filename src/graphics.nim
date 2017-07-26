@@ -18,7 +18,7 @@ proc set*(): void =
   setTexture()
 
 
-proc renderGameplay*(chunks: seq[Chunk], entities: seq[Entity]): void =
+proc renderChunks*(chunks: seq[Chunk]): void =
   setShader(shader.chunk)
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
 
@@ -26,12 +26,13 @@ proc renderGameplay*(chunks: seq[Chunk], entities: seq[Entity]): void =
   for chunk in chunks:
     let chunkX = chunk.x * config.chunkSize
     let chunkY = chunk.y * config.chunkSize
-
     for i in 0..config.chunkSize - 1:
       for j in 0..config.chunkSize - 1:
         shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX + i, chunkY + j, chunk.cell[i][j].height))
         renderMesh(mesh.cube)
 
+
+proc renderEntities*(entities: seq[Entity]): void =
   setShader(shader.simple)
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
   for entity in entities:
