@@ -125,7 +125,7 @@ proc newChunk*(map: CellMap): int =
       for i in idx:
         vertexIndices.add i
 
-      idCount += idx.len
+      idCount += vrt.len div 3
 
   return new(vertexCoords, textureCoords, vertexIndices)
 

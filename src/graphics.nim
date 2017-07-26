@@ -25,8 +25,8 @@ proc renderChunks*(chunks: seq[Chunk]): void =
   for chunk in chunks:
     let chunkX = chunk.x * config.chunkSize
     let chunkY = chunk.y * config.chunkSize
-    shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX, chunkY))
     setMesh(chunk.mesh)
+    shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX, chunkY))
     renderMesh(chunk.mesh)
 
 

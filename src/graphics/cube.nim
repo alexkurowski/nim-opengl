@@ -16,10 +16,12 @@ proc new*(height: float,
   ## idx    - seq for vertex indices
   let x1: float = x.float
   let x2: float = x.float + 1
-  let y1: float = 0f
-  let y2: float = 1f
+  let y1: float = -height
+  let y2: float = 0f
   let z1: float = y.float
   let z2: float = y.float + 1
+
+  echo($x1 & 'x' & $z1)
 
   vrt = @[
     # back
@@ -62,7 +64,7 @@ proc new*(height: float,
   # Add a texture with id = 0 six times for each side
   tex = @[]
   for _ in 1..6:
-    for i in texture.new(2):
+    for i in texture.new(0):
       tex.add i
 
   idx = @[
