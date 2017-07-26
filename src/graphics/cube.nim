@@ -21,8 +21,6 @@ proc new*(height: float,
   let z1: float = y.float
   let z2: float = y.float + 1
 
-  echo($x1 & 'x' & $z1)
-
   vrt = @[
     # back
     x2, y1, z1,
