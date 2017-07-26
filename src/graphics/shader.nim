@@ -19,6 +19,7 @@ type
 var
   current: Shader
   simple*: Shader
+  chunk*: Shader
 
 
 proc use*(shader: Shader): void =
@@ -76,7 +77,7 @@ proc create(typeName: string): Shader =
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
-  let locations = config.shaderLocations[typeName]
+  let locations = config.shaderSettings[typeName]
 
   result.locations = initTable[string, GLint]()
   for location in locations:
@@ -85,6 +86,7 @@ proc create(typeName: string): Shader =
 
 proc initialize*(): void =
   simple = create("simple")
+  chunk = create("chunk")
 
 
 proc destroy*() =

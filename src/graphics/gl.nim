@@ -6,11 +6,11 @@ imports:
   glu
 
 requires:
-  graphics.window
-  graphics.mesh
-  graphics.texture
-  graphics.shader
-  graphics.matrix
+  window
+  mesh
+  texture
+  shader
+  matrix
 
 
 proc renderStart(): void =

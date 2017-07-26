@@ -28,5 +28,5 @@ proc update*(dt: float): void =
 
 proc draw*(): void =
   case currentState
-  of "gameplay": graphics.render(gameplay.entityList)
+  of "gameplay": graphics.renderGameplay(gameplay.chunkList, gameplay.entityList)
   else: discard

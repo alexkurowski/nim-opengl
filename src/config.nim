@@ -10,6 +10,12 @@ const
 
   textureFilename* = "texture.bmp"
 
-  shaderLocations* = {
-    "simple": @["projViewMatrix", "modelMatrix"]
+  shaderSettings* = {
+    "simple": @["projViewMatrix", "modelMatrix"],
+    "chunk": @["projViewMatrix", "modelMatrix"],
   }.toTable
+
+  chunkSize* = 16
+  cellSize* = 1f
+
+  mapSize* = 16

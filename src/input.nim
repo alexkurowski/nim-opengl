@@ -16,17 +16,17 @@ var
   exit* = false
 
   lastKey*: Scancode = SDL_SCANCODE_UNKNOWN
-  keys*: set[actions] = {}
+  keys*: set[Action] = {}
 
   keymap = {
-    SDL_SCANCODE_Q:     actions.cameraRotateLeft,
-    SDL_SCANCODE_E:     actions.cameraRotateRight,
-    SDL_SCANCODE_W:     actions.cameraGoForward,
-    SDL_SCANCODE_S:     actions.cameraGoBackward,
-    SDL_SCANCODE_A:     actions.cameraGoLeft,
-    SDL_SCANCODE_D:     actions.cameraGoRight,
-    SDL_SCANCODE_SPACE: actions.cameraGoUp,
-    SDL_SCANCODE_C:     actions.cameraGoDown,
+    SDL_SCANCODE_Q:     Action.cameraRotateLeft,
+    SDL_SCANCODE_E:     Action.cameraRotateRight,
+    SDL_SCANCODE_W:     Action.cameraGoForward,
+    SDL_SCANCODE_S:     Action.cameraGoBackward,
+    SDL_SCANCODE_A:     Action.cameraGoLeft,
+    SDL_SCANCODE_D:     Action.cameraGoRight,
+    SDL_SCANCODE_SPACE: Action.cameraGoUp,
+    SDL_SCANCODE_C:     Action.cameraGoDown,
   }.toTable
 
   mousePosition*: Vec2i = vec2i(0)
@@ -55,7 +55,7 @@ proc mouseButtonDown(btn: uint8): void =
   case btn
   of 1: echo("Mouse button down: left")
   of 2: echo("Mouse button down: middle")
-  of 3: keys.incl actions.cameraDrag
+  of 3: keys.incl Action.cameraDrag
   else: discard
 
 
@@ -63,7 +63,7 @@ proc mouseButtonUp(btn: uint8): void =
   case btn
   of 1: echo("Mouse button up: left")
   of 2: echo("Mouse button up: middle")
-  of 3: keys.excl actions.cameraDrag
+  of 3: keys.excl Action.cameraDrag
   else: discard
 
 
@@ -100,5 +100,5 @@ proc read*(): void =
     else: discard
 
 
-proc isDown*(action: actions): bool =
+proc isDown*(action: Action): bool =
   keys.contains action

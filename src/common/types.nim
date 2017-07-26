@@ -1,8 +1,14 @@
-import glm
+import common
+
+imports:
+  glm
+
+requires:
+  config
 
 
 type
-  actions* {.pure.} = enum
+  Action* {.pure.} = enum
     cameraRotateLeft,
     cameraRotateRight,
     cameraGoForward,
@@ -18,3 +24,20 @@ type
     position*: Vec3f
     rotation*: Vec3f
     mesh*: int
+
+
+  CellType* {.pure.} = enum
+    ground,
+    sand,
+
+
+  Cell* = ref object
+    cellType*: int # TODO: change to CellType
+    height*: float
+
+
+  Chunk* = ref object
+    x*: int
+    y*: int
+    cell*: array[config.chunkSize, array[config.chunkSize, Cell]]
+    lod*: int

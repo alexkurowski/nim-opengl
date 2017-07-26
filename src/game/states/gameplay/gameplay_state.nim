@@ -5,11 +5,11 @@ imports:
   common.types
 
 requires:
-  random
-  perlin
+  config
   input
   physics.ray
   game.camera
+  game.chunks
   game.entities
 
 
@@ -18,54 +18,47 @@ const
 
 
 var
+  chunkList*: seq[Chunk] = @[]
   entityList*: seq[Entity] = @[]
 
 
 proc load*(): void =
-  camera.moveTo vec3f(10, -2, 10)
+  chunks.initialize()
 
-  random.randomize()
-  let noise = perlin.newNoise()
-  var height: float
+  for i in 0..config.mapSize:
+    for j in 0..config.mapSize:
+      chunkList.add chunks.newChunkAt(i, j)
 
-  for i in 0..31:
-    for j in 0..31:
-      height = ( perlin.simplex(noise, i.float / 4, j.float / 4) * 12 ) * -1.0
-      entities.new(
-        list = entityList,
-        position = vec3f(i.float, height, j.float),
-        rotation = vec3f(0.0, 0.0, 0.0),
-        meshType = "cube"
-      )
+  camera.moveTo vec3f(8, 0, 8)
 
 
 proc cameraMovement(dt: float): void =
   if allowDebugCameraMovement:
+    let speed = 4f
     var change = vec3f(0.0)
 
-    if input.keys.contains actions.cameraGoForward:
+    if input.keys.contains Action.cameraGoForward:
       change.x += camera.rotation.y.radians.sin
       change.z -= camera.rotation.y.radians.cos
-    if input.keys.contains actions.cameraGoBackward:
+    if input.keys.contains Action.cameraGoBackward:
       change.x -= camera.rotation.y.radians.sin
       change.z += camera.rotation.y.radians.cos
-    if input.keys.contains actions.cameraGoLeft:
+    if input.keys.contains Action.cameraGoLeft:
       change.x -= camera.rotation.y.radians.cos
       change.z -= camera.rotation.y.radians.sin
-    if input.keys.contains actions.cameraGoRight:
+    if input.keys.contains Action.cameraGoRight:
       change.x += camera.rotation.y.radians.cos
       change.z += camera.rotation.y.radians.sin
 
-    if input.keys.contains actions.cameraGoUp:
+    if input.keys.contains Action.cameraGoUp:
       change.y += 1
-    if input.keys.contains actions.cameraGoDown:
+    if input.keys.contains Action.cameraGoDown:
       change.y -= 1
 
     if change.length != 0:
-      let speed = 4f
       camera.move(change.normalize * speed * dt)
 
-  if input.isDown(actions.cameraDrag):
+  if input.isDown(Action.cameraDrag):
     camera.rotate(input.mouseDelta.y.float, input.mouseDelta.x.float)
 
 

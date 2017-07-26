@@ -40,6 +40,10 @@ proc view*(position, rotation: Vec3f): Mat4f =
   result = translate(result, -position)
 
 
+proc chunk*(x, y: int, height: float): Mat4f =
+  translate(mat4f, vec3f(x.float, height, y.float))
+
+
 proc model*(position: Vec3f, rotation: Vec3f): Mat4f =
   result = mat4f()
 

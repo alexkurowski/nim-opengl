@@ -1,27 +1,39 @@
 import common
 
 includes:
-  graphics_gl
+  graphics.gl
 
 imports:
   glm
   common.types
 
 requires:
+  config
   game.camera
-  game.entities
 
 
 proc set*(): void =
   renderStart()
 
   setTexture()
-  setShader(shader.simple)
 
 
-proc render*(entities: seq[Entity]): void =
+proc renderGameplay*(chunks: seq[Chunk], entities: seq[Entity]): void =
+  setShader(shader.chunk)
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
 
+  setMesh(mesh.cube)
+  for chunk in chunks:
+    let chunkX = chunk.x * config.chunkSize
+    let chunkY = chunk.y * config.chunkSize
+
+    for i in 0..config.chunkSize - 1:
+      for j in 0..config.chunkSize - 1:
+        shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX + i, chunkY + j, chunk.cell[i][j].height))
+        renderMesh(mesh.cube)
+
+  setShader(shader.simple)
+  shader.setMat4("projViewMatrix", camera.projection * camera.view)
   for entity in entities:
     setMesh(entity.mesh)
     shader.setMat4("modelMatrix", graphics.matrix.model(entity.position, entity.rotation))
