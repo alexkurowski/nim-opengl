@@ -66,3 +66,4 @@ proc initialize*(): void =
 
 proc destroy*(): void =
   glDeleteTextures(1.GLSizei, atlas.addr)
+  atlas = 0.GLuint

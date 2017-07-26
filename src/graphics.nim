@@ -22,14 +22,12 @@ proc renderChunks*(chunks: seq[Chunk]): void =
   setShader(shader.chunk)
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
 
-  setMesh(mesh.cube)
   for chunk in chunks:
     let chunkX = chunk.x * config.chunkSize
     let chunkY = chunk.y * config.chunkSize
-    for i in 0..config.chunkSize - 1:
-      for j in 0..config.chunkSize - 1:
-        shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX + i, chunkY + j, chunk.cell[i][j].height))
-        renderMesh(mesh.cube)
+    shader.setMat4("modelMatrix", graphics.matrix.chunk(chunkX, chunkY))
+    setMesh(chunk.mesh)
+    renderMesh(chunk.mesh)
 
 
 proc renderEntities*(entities: seq[Entity]): void =

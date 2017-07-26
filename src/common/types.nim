@@ -36,8 +36,12 @@ type
     height*: float
 
 
+  CellMap* = array[config.chunkSize, array[config.chunkSize, Cell]]
+
+
   Chunk* = ref object
     x*: int
     y*: int
-    cell*: array[config.chunkSize, array[config.chunkSize, Cell]]
+    cell*: CellMap
     lod*: int
+    mesh*: int

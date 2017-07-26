@@ -14,7 +14,7 @@ requires:
 
 
 const
-  allowDebugCameraMovement = false
+  allowDebugCameraMovement = true
 
 
 var
@@ -58,7 +58,7 @@ proc cameraMovement(dt: float): void =
     if change.length != 0:
       camera.move(change.normalize * speed * dt)
 
-  if input.isDown(Action.cameraDrag):
+  if allowDebugCameraMovement or input.isDown(Action.cameraDrag):
     camera.rotate(input.mouseDelta.y.float, input.mouseDelta.x.float)
 
 

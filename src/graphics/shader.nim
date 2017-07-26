@@ -91,3 +91,6 @@ proc initialize*(): void =
 
 proc destroy*() =
   glDeleteProgram(simple.id)
+  glDeleteProgram(chunk.id)
+  simple = nil
+  chunk = nil

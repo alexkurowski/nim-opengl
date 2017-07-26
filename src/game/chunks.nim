@@ -8,6 +8,7 @@ requires:
   random
   perlin
   config
+  graphics.mesh
 
 
 const
@@ -45,3 +46,5 @@ proc newChunkAt*(x, y: int): Chunk =
         cellType: 0,
         height: height
       )
+
+  result.mesh = mesh.newChunk(result.cell)
