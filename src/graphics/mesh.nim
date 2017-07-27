@@ -67,13 +67,15 @@ proc addEBO(mesh: var Mesh, indices: ptr seq[GLuint]): void =
   mesh.vboList.add(ebo)
 
 
-proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
+proc new*(vertexCoords, normalCoords, textureCoords: seq[float64], indices: seq[int]): int =
   var
     vertexCoordsGl:  seq[GLfloat] = @[]
+    normalCoordsGl:  seq[GLfloat] = @[]
     textureCoordsGl: seq[GLfloat] = @[]
     indicesGl:       seq[GLuint]  = @[]
 
   for x in vertexCoords:  vertexCoordsGl.add(x.GLfloat)
+  for x in normalCoords:  normalCoordsGl.add(x.GLfloat)
   for x in textureCoords: textureCoordsGl.add(x.GLfloat)
   for x in indices:       indicesGl.add(x.GLuint)
 
@@ -86,6 +88,7 @@ proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
   glBindVertexArray(mesh.vao)
 
   addVBO(mesh, 3, vertexCoordsGl.addr)
+  addVBO(mesh, 3, normalCoordsGl.addr)
   addVBO(mesh, 2, textureCoordsGl.addr)
   addEBO(mesh, indicesGl.addr)
 
@@ -97,10 +100,12 @@ proc new*(vertexCoords, textureCoords: seq[float64], indices: seq[int]): int =
 
 proc newChunk*(map: CellMap): int =
   var vertexCoords:  seq[float] = @[]
+  var normalCoords:  seq[float] = @[]
   var textureCoords: seq[float] = @[]
   var vertexIndices: seq[int]   = @[]
 
   var vrt: seq[float]
+  var nrm: seq[float]
   var tex: seq[float]
   var idx: seq[int]
 
@@ -113,11 +118,14 @@ proc newChunk*(map: CellMap): int =
         map[x][y].height,
         x, y,
         idCount,
-        vrt, tex, idx
+        vrt, nrm, tex, idx
       )
 
       for v in vrt:
         vertexCoords.add v
+
+      for n in nrm:
+        normalCoords.add n
 
       for t in tex:
         textureCoords.add t
@@ -127,7 +135,7 @@ proc newChunk*(map: CellMap): int =
 
       idCount += vrt.len div 3
 
-  return new(vertexCoords, textureCoords, vertexIndices)
+  return new(vertexCoords, normalCoords, textureCoords, vertexIndices)
 
 
 proc destroyMeshes*(): void =

@@ -48,6 +48,8 @@ proc cubeMesh(): int =
     0.0, 0.0, 1.0
   ]
 
+  let normalCoords: seq[float] = @[]
+
   var textureCoords: seq[float] = @[]
   # add 4 sides
   for _ in 1..4:
@@ -82,7 +84,7 @@ proc cubeMesh(): int =
     22, 23, 20
   ]
 
-  mesh.new(vertexCoords, textureCoords, vertexIndices)
+  mesh.new(vertexCoords, normalCoords, textureCoords, vertexIndices)
 
 
 proc new*(list: var seq[Entity], position, rotation: Vec3f, meshType: string): void =

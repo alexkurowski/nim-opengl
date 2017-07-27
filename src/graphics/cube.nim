@@ -6,12 +6,13 @@ requires:
 
 proc new*(height: float,
           x, y, id: int,
-          vrt, tex: var seq[float64],
+          vrt, nrm, tex: var seq[float64],
           idx: var seq[int]): void =
   ## height - height of the created cube
   ## x, y   - position of a mesh inside chunk
   ## id     - where to start counting indices
   ## vrt    - seq for new vertex coordinates
+  ## nrm    - seq for vertex normal directions
   ## tex    - seq for new texture coordinates
   ## idx    - seq for vertex indices
   let x1: float = x.float
@@ -57,6 +58,44 @@ proc new*(height: float,
     x2, y1, z1,
     x2, y1, z2,
     x1, y1, z2
+  ]
+
+  nrm = @[
+    # back
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+
+    # right
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+
+    # front
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+
+    # left
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+
+    # top
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+
+    # bottom
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0
   ]
 
   # Add a texture with id = 0 six times for each side
