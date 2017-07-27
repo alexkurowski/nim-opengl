@@ -21,32 +21,17 @@ proc renderEnd(): void =
   window.swap()
 
 
-proc setShader(nextShader: shader.Shader): void =
+proc setShader(nextShader: string): void =
   shader.use(nextShader)
-  glUseProgram(nextShader.id)
-
-
-proc unsetShader(): void =
-  glUseProgram(0);
 
 
 proc setTexture(): void =
-  glBindTexture(GL_TEXTURE_2D, texture.atlas)
-
-
-proc unsetTexture(): void =
-  glBindTexture(GL_TEXTURE_2D, 0)
+  texture.use()
 
 
 proc setMesh(id: int): void =
-  glBindVertexArray(mesh.meshes[id].vao)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.meshes[id].ebo)
-
-
-proc unsetMesh(): void =
-  glBindVertexArray(0)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+  mesh.use(id)
 
 
 proc renderMesh(id: int): void =
-  glDrawElements(GL_TRIANGLES, mesh.meshes[id].indexCount, GL_UNSIGNED_INT, nil)
+  mesh.render()

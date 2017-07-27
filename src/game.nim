@@ -4,7 +4,7 @@ requires:
   clock
   input
   graphics
-  game.state
+  state
 
 
 proc start*(): void =

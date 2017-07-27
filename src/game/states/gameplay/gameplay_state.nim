@@ -34,7 +34,7 @@ proc load*(): void =
 
 proc cameraMovement(dt: float): void =
   if allowDebugCameraMovement:
-    let speed = 4f
+    let speed = 12f
     var change = vec3f(0.0)
 
     if input.keys.contains Action.cameraGoForward:

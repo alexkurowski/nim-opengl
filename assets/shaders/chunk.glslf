@@ -16,7 +16,7 @@ const vec3 backLightDirection = normalize(vec3(-0.8, -1.0, -0.8));
 
 const vec3 topLightColor  = vec3(1.0, 0.95, 0.8);
 const vec3 sideLightColor = vec3(0.3, 0.8, 0.4);
-const vec3 backLightColor = vec3(0.0, 0.15, 0.3);
+const vec3 backLightColor = vec3(0.2, 0.4, 0.6);
 
 void main() {
 

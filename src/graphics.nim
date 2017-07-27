@@ -19,7 +19,7 @@ proc set*(): void =
 
 
 proc renderChunks*(chunks: seq[Chunk]): void =
-  setShader(shader.chunk)
+  setShader("chunk")
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
 
   for chunk in chunks:
@@ -31,7 +31,7 @@ proc renderChunks*(chunks: seq[Chunk]): void =
 
 
 proc renderEntities*(entities: seq[Entity]): void =
-  setShader(shader.simple)
+  setShader("simple")
   shader.setMat4("projViewMatrix", camera.projection * camera.view)
   for entity in entities:
     setMesh(entity.mesh)
@@ -40,10 +40,6 @@ proc renderEntities*(entities: seq[Entity]): void =
 
 
 proc unset*(): void =
-  unsetMesh()
-  unsetShader()
-  unsetTexture()
-
   renderEnd()
 
 

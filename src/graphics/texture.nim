@@ -14,7 +14,11 @@ const
 
 
 var
-  atlas*: GLuint
+  atlas: GLuint
+
+
+proc use*(): void =
+  glBindTexture(GL_TEXTURE_2D, atlas)
 
 
 proc new*(id: int): seq[float] =

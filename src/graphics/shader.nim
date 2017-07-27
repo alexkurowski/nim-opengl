@@ -11,19 +11,23 @@ requires:
 
 
 type
-  Shader* = ref object
-    id*: GLuint
+  Shader = ref object
+    id: GLuint
     locations: Table[string, GLint]
 
 
 var
   current: Shader
-  simple*: Shader
-  chunk*: Shader
+  shaders: Table[string, Shader]
 
 
-proc use*(shader: Shader): void =
-  current = shader
+proc use*(name: string): void =
+  current = shaders[name]
+  glUseProgram(shaders[name].id)
+
+
+proc id*(): GLuint =
+  current.id
 
 
 proc setFloat*(loc: string, value: float): void =
@@ -85,12 +89,11 @@ proc create(typeName: string): Shader =
 
 
 proc initialize*(): void =
-  simple = create("simple")
-  chunk = create("chunk")
+  shaders = initTable[string, Shader]()
+  shaders["simple"] = create("simple")
+  shaders["chunk"] = create("chunk")
 
 
 proc destroy*() =
-  glDeleteProgram(simple.id)
-  glDeleteProgram(chunk.id)
-  simple = nil
-  chunk = nil
+  glDeleteProgram(shaders["simple"].id)
+  glDeleteProgram(shaders["chunk"].id)

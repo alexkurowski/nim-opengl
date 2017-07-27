@@ -11,15 +11,26 @@ requires:
 
 
 type
-  Mesh* = ref object
-    vao*: GLuint
-    ebo*: GLuint
+  Mesh = ref object
+    vao: GLuint
+    ebo: GLuint
     vboList: seq[GLuint]
-    indexCount*: GLsizei
+    indexCount: GLsizei
 
 
 var
-  meshes*: seq[Mesh] = @[]
+  current: Mesh
+  meshes: seq[Mesh] = @[]
+
+
+proc use*(id: int): void =
+  current = meshes[id]
+  glBindVertexArray(meshes[id].vao)
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[id].ebo)
+
+
+proc render*(): void =
+  glDrawElements(GL_TRIANGLES, current.indexCount, GL_UNSIGNED_INT, nil)
 
 
 proc addVBO(mesh: var Mesh, dimensions: cint, vertices: ptr seq[GLfloat]): void =

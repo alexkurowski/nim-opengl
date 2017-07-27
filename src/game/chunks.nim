@@ -5,9 +5,8 @@ imports:
   common.types
 
 requires:
-  random
-  perlin
   config
+  island_generator
   graphics.mesh
 
 
@@ -15,13 +14,8 @@ const
   size = config.chunkSize
 
 
-var
-  noise: perlin.Noise
-
-
 proc initialize*(): void =
-  random.randomize()
-  noise = perlin.newNoise()
+  islandGenerator.initialize()
 
 
 proc newChunkAt*(x, y: int): Chunk =
@@ -31,20 +25,5 @@ proc newChunkAt*(x, y: int): Chunk =
     lod: 0
   )
 
-  var height: float
-
-  let sx = x * size
-  let sy = y * size
-  let ex = sx + size - 1
-  let ey = sy + size - 1
-
-  for i in sx..ex:
-    for j in sy..ey:
-      height = -1f * ( perlin.simplex(noise, i.float / 4, j.float / 4) * 12 )
-
-      result.cell[i - sx][j - sy] = Cell(
-        cellType: 0,
-        height: height
-      )
-
+  result.cell = islandGenerator.generateChunk(x, y)
   result.mesh = mesh.newChunk(result.cell)
