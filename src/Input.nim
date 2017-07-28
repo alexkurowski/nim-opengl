@@ -7,7 +7,7 @@ imports:
   common.types
 
 requires:
-  graphics.window
+  graphics/Window
 
 
 var
@@ -33,25 +33,25 @@ var
   mouseDelta*: Vec2i    = vec2i(0)
 
 
-proc keyDown(key: Scancode): void =
+proc keyDown(key: Scancode) =
   lastKey = key
   if keymap.hasKey key:
     keys.incl keymap[key]
 
 
-proc keyUp(key: Scancode): void =
+proc keyUp(key: Scancode) =
   lastKey = SDL_SCANCODE_UNKNOWN
   if keymap.hasKey key:
     keys.excl keymap[key]
 
 
-proc mouseMotion(x, y: cint): void =
+proc mouseMotion(x, y: cint) =
   mouseDelta.x = mousePosition.x - x
   mouseDelta.y = mousePosition.y - y
   mousePosition = vec2i(x, y)
 
 
-proc mouseButtonDown(btn: uint8): void =
+proc mouseButtonDown(btn: uint8) =
   case btn
   of 1: echo("Mouse button down: left")
   of 2: echo("Mouse button down: middle")
@@ -59,7 +59,7 @@ proc mouseButtonDown(btn: uint8): void =
   else: discard
 
 
-proc mouseButtonUp(btn: uint8): void =
+proc mouseButtonUp(btn: uint8) =
   case btn
   of 1: echo("Mouse button up: left")
   of 2: echo("Mouse button up: middle")
@@ -67,7 +67,7 @@ proc mouseButtonUp(btn: uint8): void =
   else: discard
 
 
-proc read*(): void =
+proc read*() =
   mouseDelta = vec2i(0)
 
   while pollEvent(event):
@@ -77,7 +77,7 @@ proc read*(): void =
 
     of WindowEvent:
       if event.window.event == WindowEvent_Resized:
-        window.resize(
+        Window.resize(
           w = event.window.data1,
           h = event.window.data2
         )

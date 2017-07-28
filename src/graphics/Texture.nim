@@ -5,7 +5,7 @@ imports:
   opengl
 
 requires:
-  config
+  Config
 
 
 const
@@ -17,7 +17,7 @@ var
   atlas: GLuint
 
 
-proc use*(): void =
+proc use*() =
   glBindTexture(GL_TEXTURE_2D, atlas)
 
 
@@ -41,10 +41,10 @@ proc new*(id: int): seq[float] =
   ]
 
 
-proc initialize*(): void =
+proc initialize*() =
   glGenTextures(1.GLsizei, atlas.addr)
 
-  var image = loadBMP("assets/textures/" & config.textureFilename)
+  var image = loadBMP("assets/textures/" & Config.textureFilename)
 
   glBindTexture(GL_TEXTURE_2D, atlas)
 
@@ -68,6 +68,6 @@ proc initialize*(): void =
   glBindTexture(GL_TEXTURE_2D, 0)
 
 
-proc destroy*(): void =
+proc destroy*() =
   glDeleteTextures(1.GLSizei, atlas.addr)
   atlas = 0.GLuint

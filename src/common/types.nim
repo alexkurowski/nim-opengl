@@ -4,7 +4,7 @@ imports:
   glm
 
 requires:
-  config
+  Config
 
 
 type
@@ -36,7 +36,7 @@ type
     height*: float
 
 
-  CellMap* = array[config.chunkSize, array[config.chunkSize, Cell]]
+  CellMap* = array[Config.chunkSize, array[Config.chunkSize, Cell]]
 
 
   Chunk* = ref object

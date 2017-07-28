@@ -4,13 +4,13 @@ imports:
   glm
 
 requires:
-  window
+  Window
 
 
 proc projection*(fov: float): Mat4f =
   result = perspective(
     fov.radians,
-    window.width.float / window.height.float,
+    Window.width.float / Window.height.float,
     0.001,
     1000.0
   ).mat4f

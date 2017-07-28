@@ -1,13 +1,13 @@
 import common
 
 requires:
-  texture
+  Texture
 
 
 proc new*(height: float,
           x, y, id: int,
           vrt, nrm, tex: var seq[float64],
-          idx: var seq[int]): void =
+          idx: var seq[int]) =
   ## height - height of the created cube
   ## x, y   - position of a mesh inside chunk
   ## id     - where to start counting indices
@@ -101,7 +101,7 @@ proc new*(height: float,
   # Add a texture with id = 0 six times for each side
   tex = @[]
   for _ in 1..6:
-    for i in texture.new(0):
+    for i in Texture.new(0):
       tex.add i
 
   idx = @[

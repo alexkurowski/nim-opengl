@@ -4,7 +4,7 @@ imports:
   glm
 
 requires:
-  graphics.matrix
+  graphics/Matrix
 
 
 var
@@ -16,28 +16,28 @@ var
   view*: Mat4f
 
 
-proc updateMatrices(): void =
+proc updateMatrices() =
   let positionAdd = vec3f(
     0.5 - rotation.y.radians.sin * distance,
     0,
     0.5 + rotation.y.radians.cos * distance
   )
 
-  projection = matrix.projection(fov)
-  view = matrix.view(position + positionAdd, rotation)
+  projection = Matrix.projection(fov)
+  view = Matrix.view(position + positionAdd, rotation)
 
 
-proc move*(change: Vec3f): void =
+proc move*(change: Vec3f) =
   position += change
   updateMatrices()
 
 
-proc moveTo*(newPosition: Vec3f): void =
+proc moveTo*(newPosition: Vec3f) =
   position = newPosition
   updateMatrices()
 
 
-proc rotate*(vx, vy: float): void =
+proc rotate*(vx, vy: float) =
   rotation.x -= vx
   rotation.y -= vy
 

@@ -3,11 +3,10 @@ import common
 imports:
   opengl
   glm
-  matrix
   tables
 
 requires:
-  config
+  Config
 
 
 type
@@ -21,7 +20,7 @@ var
   shaders: Table[string, Shader]
 
 
-proc use*(name: string): void =
+proc use*(name: string) =
   current = shaders[name]
   glUseProgram(shaders[name].id)
 
@@ -30,21 +29,21 @@ proc id*(): GLuint =
   current.id
 
 
-proc setFloat*(loc: string, value: float): void =
+proc setFloat*(loc: string, value: float) =
   glUniform1f(
     current.locations[loc],
     value.GLfloat
   )
 
 
-proc setBool*(loc: string, value: bool): void =
+proc setBool*(loc: string, value: bool) =
   glUniform1i(
     current.locations[loc],
     value.GLint
   )
 
 
-proc setMat4*(loc: string, value: Mat4f): void =
+proc setMat4*(loc: string, value: Mat4f) =
   var mat = value
 
   glUniformMatrix4fv(
@@ -81,14 +80,14 @@ proc create(typeName: string): Shader =
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
-  let locations = config.shaderSettings[typeName]
+  let locations = Config.shaderSettings[typeName]
 
   result.locations = initTable[string, GLint]()
   for location in locations:
     result.locations[location] = glGetUniformLocation(result.id, location)
 
 
-proc initialize*(): void =
+proc initialize*() =
   shaders = initTable[string, Shader]()
   shaders["simple"] = create("simple")
   shaders["chunk"] = create("chunk")

@@ -5,9 +5,8 @@ imports:
   common.types
 
 requires:
-  config
-  cube
-  texture
+  Config
+  Cube
 
 
 type
@@ -23,17 +22,17 @@ var
   meshes: seq[Mesh] = @[]
 
 
-proc use*(id: int): void =
+proc use*(id: int) =
   current = meshes[id]
   glBindVertexArray(meshes[id].vao)
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[id].ebo)
 
 
-proc render*(): void =
+proc render*() =
   glDrawElements(GL_TRIANGLES, current.indexCount, GL_UNSIGNED_INT, nil)
 
 
-proc addVBO(mesh: var Mesh, dimensions: cint, vertices: ptr seq[GLfloat]): void =
+proc addVBO(mesh: var Mesh, dimensions: cint, vertices: ptr seq[GLfloat]) =
   var vbo: GLuint
   glGenBuffers(1.GLsizei, vbo.addr)
   glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -60,7 +59,7 @@ proc addVBO(mesh: var Mesh, dimensions: cint, vertices: ptr seq[GLfloat]): void 
   mesh.vboList.add(vbo)
 
 
-proc addEBO(mesh: var Mesh, indices: ptr seq[GLuint]): void =
+proc addEBO(mesh: var Mesh, indices: ptr seq[GLuint]) =
   var ebo: GLuint
   glGenBuffers(1.GLsizei, ebo.addr)
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
@@ -122,10 +121,10 @@ proc newChunk*(map: CellMap): int =
 
   var idCount: int = 0
 
-  for x in 0..config.chunkSize - 1:
-    for y in 0..config.chunkSize - 1:
+  for x in 0..Config.chunkSize - 1:
+    for y in 0..Config.chunkSize - 1:
 
-      cube.new(
+      Cube.new(
         map[x][y].height,
         x, y,
         idCount,
@@ -149,14 +148,14 @@ proc newChunk*(map: CellMap): int =
   return new(vertexCoords, normalCoords, textureCoords, vertexIndices)
 
 
-proc destroyMeshes*(): void =
+proc destroyMeshes*() =
   for mesh in meshes:
     glDeleteVertexArrays(1, mesh.vao.addr)
     glDeleteBuffers(mesh.vboList.len.GLsizei, mesh.vboList[0].addr)
   meshes = @[]
 
 
-proc initialize*(): void =
+proc initialize*() =
   # TODO: Create all possible meshes here
   # `proc new` then should return an id of the specific mesh
   # from a list and not create anything new

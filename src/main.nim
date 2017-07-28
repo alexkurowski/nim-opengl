@@ -1,8 +1,8 @@
-import game
+import Game
 
 
-game.start()
+Game.start()
 
-game.mainLoop()
+Game.mainLoop()
 
-game.finish()
+Game.finish()

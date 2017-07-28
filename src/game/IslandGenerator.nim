@@ -4,14 +4,14 @@ imports:
   common.types
 
 requires:
-  config
+  Config
   random
   perlin
 
 
 const
-  chunkSize   = config.chunkSize
-  mapSize     = config.mapSize * config.chunkSize
+  chunkSize   = Config.chunkSize
+  mapSize     = Config.mapSize * Config.chunkSize
   persistence = 0.1
   octaves     = 16
 
@@ -20,7 +20,7 @@ var
   noise: perlin.Noise
 
 
-proc initialize*(): void =
+proc initialize*() =
   random.randomize()
   noise = perlin.newNoise(octaves, persistence)
 
