@@ -4,6 +4,9 @@ imports:
   opengl
   common.types
 
+requires:
+  MeshConstructor
+
 
 type
   Mesh = ref object
@@ -102,6 +105,10 @@ proc new*(vertexCoords, normalCoords, textureCoords, indices: seq[float]): int =
 
   result = meshes.len
   meshes.add(mesh)
+
+
+proc initialize*() =
+  MeshConstructor.initialize()
 
 
 proc destroyAll*() =

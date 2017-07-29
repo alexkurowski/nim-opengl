@@ -49,10 +49,7 @@ proc renderChunks*(chunks: seq[Chunk]) =
   Shader.setMat4("projViewMatrix", Camera.projection * Camera.view)
 
   for chunk in chunks:
-    let chunkX = chunk.x * Config.chunkSize
-    let chunkY = chunk.y * Config.chunkSize
     setMesh(chunk.mesh)
-    Shader.setMat4("modelMatrix", Matrix.chunk(chunkX, chunkY))
     renderMesh(chunk.mesh)
 
 
@@ -74,6 +71,7 @@ proc initialize*() =
   Window.initializeOpenGl()
 
   Shader.initialize()
+  Mesh.initialize()
   Texture.initialize()
 
 

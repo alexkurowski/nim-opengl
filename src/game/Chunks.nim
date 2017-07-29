@@ -26,4 +26,4 @@ proc newChunkAt*(x, y: int): Chunk =
   )
 
   result.cell = IslandGenerator.generateChunk(x, y)
-  result.mesh = ChunkMesh.new()
+  result.mesh = ChunkMesh.new(x, y)

@@ -6,11 +6,11 @@ imports:
 
 requires:
   Config
-  MeshLoader
+  MeshConstructor
   Mesh
 
 
-proc new*(): int =
+proc new*(x, y: int): int =
   var vrt: seq[float] = @[]
   var nrm: seq[float] = @[]
   var tex: seq[float] = @[]
@@ -24,10 +24,10 @@ proc new*(): int =
 
   for i in 0..Config.chunkSize - 1:
     for j in 0..Config.chunkSize - 1:
-      position.x = i.float
-      position.z = j.float
+      position.x = i.float + x.float * Config.chunkSize
+      position.z = j.float + y.float * Config.chunkSize
 
-      MeshLoader.load("grass1", vrt, nrm, tex, idx, idOffset, position, offset, scale)
+      MeshConstructor.add("grass1", vrt, nrm, tex, idx, idOffset, position, offset, scale)
 
   return Mesh.new(vrt, nrm, tex, idx)
 

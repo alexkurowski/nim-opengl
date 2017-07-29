@@ -9,12 +9,10 @@ out vec3 passNormalDirection;
 out vec2 passTextureCoords;
 
 uniform mat4 projViewMatrix;
-uniform mat4 modelMatrix;
 
 void main() {
 
   gl_Position = projViewMatrix *
-                modelMatrix *
                 vec4(inVertexPosition.xyz, 1.0);
 
   passVertexPosition  = inVertexPosition;
