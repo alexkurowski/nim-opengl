@@ -22,7 +22,7 @@ proc renderEnd() =
   Window.swap()
 
 
-proc setShader(nextShader: string) =
+proc setShader(nextShader: ShaderType) =
   Shader.use(nextShader)
 
 
@@ -45,7 +45,7 @@ proc set*() =
 
 
 proc renderChunks*(chunks: seq[Chunk]) =
-  setShader("chunk")
+  setShader(ShaderType.chunk)
   Shader.setMat4("projViewMatrix", Camera.projection * Camera.view)
 
   for chunk in chunks:
@@ -57,7 +57,7 @@ proc renderChunks*(chunks: seq[Chunk]) =
 
 
 proc renderEntities*(entities: seq[Entity]) =
-  setShader("simple")
+  setShader(ShaderType.simple)
   Shader.setMat4("projViewMatrix", Camera.projection * Camera.view)
   for entity in entities:
     setMesh(entity.mesh)
@@ -75,9 +75,8 @@ proc initialize*() =
 
   Shader.initialize()
   Texture.initialize()
-  Mesh.initialize()
 
 
 proc finish*() =
-  Mesh.destroyMeshes()
+  Mesh.destroyAll()
   Window.destroy()

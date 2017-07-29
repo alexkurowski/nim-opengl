@@ -7,7 +7,7 @@ imports:
 requires:
   Config
   IslandGenerator
-  graphics/Mesh
+  graphics/ChunkMesh
 
 
 const
@@ -26,4 +26,4 @@ proc newChunkAt*(x, y: int): Chunk =
   )
 
   result.cell = IslandGenerator.generateChunk(x, y)
-  result.mesh = Mesh.newChunk(result.cell)
+  result.mesh = ChunkMesh.new()

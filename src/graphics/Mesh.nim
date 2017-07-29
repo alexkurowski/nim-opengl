@@ -4,10 +4,6 @@ imports:
   opengl
   common.types
 
-requires:
-  Config
-  Cube
-
 
 type
   Mesh = ref object
@@ -77,7 +73,7 @@ proc addEBO(mesh: var Mesh, indices: ptr seq[GLuint]) =
   mesh.vboList.add(ebo)
 
 
-proc new*(vertexCoords, normalCoords, textureCoords: seq[float64], indices: seq[int]): int =
+proc new*(vertexCoords, normalCoords, textureCoords, indices: seq[float]): int =
   var
     vertexCoordsGl:  seq[GLfloat] = @[]
     normalCoordsGl:  seq[GLfloat] = @[]
@@ -87,7 +83,7 @@ proc new*(vertexCoords, normalCoords, textureCoords: seq[float64], indices: seq[
   for x in vertexCoords:  vertexCoordsGl.add(x.GLfloat)
   for x in normalCoords:  normalCoordsGl.add(x.GLfloat)
   for x in textureCoords: textureCoordsGl.add(x.GLfloat)
-  for x in indices:       indicesGl.add(x.GLuint)
+  for x in indices:       indicesGl.add(x.int.GLuint)
 
   var mesh = Mesh(
     vboList: @[],
@@ -108,55 +104,8 @@ proc new*(vertexCoords, normalCoords, textureCoords: seq[float64], indices: seq[
   meshes.add(mesh)
 
 
-proc newChunk*(map: CellMap): int =
-  var vertexCoords:  seq[float] = @[]
-  var normalCoords:  seq[float] = @[]
-  var textureCoords: seq[float] = @[]
-  var vertexIndices: seq[int]   = @[]
-
-  var vrt: seq[float]
-  var nrm: seq[float]
-  var tex: seq[float]
-  var idx: seq[int]
-
-  var idCount: int = 0
-
-  for x in 0..Config.chunkSize - 1:
-    for y in 0..Config.chunkSize - 1:
-
-      Cube.new(
-        map[x][y].height,
-        x, y,
-        idCount,
-        vrt, nrm, tex, idx
-      )
-
-      for v in vrt:
-        vertexCoords.add v
-
-      for n in nrm:
-        normalCoords.add n
-
-      for t in tex:
-        textureCoords.add t
-
-      for i in idx:
-        vertexIndices.add i
-
-      idCount += vrt.len div 3
-
-  return new(vertexCoords, normalCoords, textureCoords, vertexIndices)
-
-
-proc destroyMeshes*() =
+proc destroyAll*() =
   for mesh in meshes:
     glDeleteVertexArrays(1, mesh.vao.addr)
     glDeleteBuffers(mesh.vboList.len.GLsizei, mesh.vboList[0].addr)
   meshes = @[]
-
-
-proc initialize*() =
-  # TODO: Create all possible meshes here
-  # `proc new` then should return an id of the specific mesh
-  # from a list and not create anything new
-  discard

@@ -20,4 +20,4 @@ const
 
   cellSize*  = 1f # One block is this size in gl
   chunkSize* = 16 # A chunk consists of this many blocks per line
-  mapSize*   = 16 # The map is this number of chunks per line
+  mapSize*   = 4 # The map is this number of chunks per line

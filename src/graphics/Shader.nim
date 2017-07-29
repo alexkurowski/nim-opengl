@@ -4,6 +4,7 @@ imports:
   opengl
   glm
   tables
+  common.types
 
 requires:
   Config
@@ -17,10 +18,10 @@ type
 
 var
   current: Shader
-  shaders: Table[string, Shader]
+  shaders: Table[ShaderType, Shader]
 
 
-proc use*(name: string) =
+proc use*(name: ShaderType) =
   current = shaders[name]
   glUseProgram(shaders[name].id)
 
@@ -54,22 +55,21 @@ proc setMat4*(loc: string, value: Mat4f) =
   )
 
 
-proc compileShader(source: cstringArray, shaderType: GLenum): GLuint =
+proc compileShader(source: string, shaderType: GLenum): GLuint =
   result = glCreateShader(shaderType)
 
-  glShaderSource(result, 1.GLsizei, source, nil)
+  glShaderSource(result, 1.GLsizei, [source].allocCStringArray, nil)
   glCompileShader(result)
 
 
-proc create(typeName: string): Shader =
-  result = Shader()
-
-  var vertexSrc   = [readFile("assets/shaders/" & typeName & ".glslv")].allocCStringArray
-  var fragmentSrc = [readFile("assets/shaders/" & typeName & ".glslf")].allocCStringArray
+proc create(filename: string): Shader =
+  let vertexSrc   = readFile("assets/shaders/" & filename & ".glslv")
+  let fragmentSrc = readFile("assets/shaders/" & filename & ".glslf")
 
   var vertexShaderID   = compileShader(vertexSrc, GL_VERTEX_SHADER)
   var fragmentShaderID = compileShader(fragmentSrc, GL_FRAGMENT_SHADER)
 
+  result = Shader()
   result.id = glCreateProgram()
 
   glAttachShader(result.id, vertexShaderID)
@@ -80,7 +80,7 @@ proc create(typeName: string): Shader =
   glDeleteShader(vertexShaderID)
   glDeleteShader(fragmentShaderID)
 
-  let locations = Config.shaderSettings[typeName]
+  let locations = Config.shaderSettings[filename]
 
   result.locations = initTable[string, GLint]()
   for location in locations:
@@ -88,11 +88,11 @@ proc create(typeName: string): Shader =
 
 
 proc initialize*() =
-  shaders = initTable[string, Shader]()
-  shaders["simple"] = create("simple")
-  shaders["chunk"] = create("chunk")
+  shaders = initTable[ShaderType, Shader]()
+  shaders[ShaderType.simple] = create("simple")
+  shaders[ShaderType.chunk] = create("chunk")
 
 
-proc destroy*() =
-  glDeleteProgram(shaders["simple"].id)
-  glDeleteProgram(shaders["chunk"].id)
+proc destroyAll*() =
+  glDeleteProgram(shaders[ShaderType.simple].id)
+  glDeleteProgram(shaders[ShaderType.chunk].id)

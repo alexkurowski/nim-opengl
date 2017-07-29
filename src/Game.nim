@@ -4,7 +4,7 @@ requires:
   Clock
   Input
   Graphics
-  State
+  game/State
 
 
 proc start*() =

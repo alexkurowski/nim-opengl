@@ -1,6 +1,7 @@
 import common
 
 imports:
+  math
   common.types
 
 requires:
@@ -46,7 +47,7 @@ proc generateChunk*(x, y: int): CellMap =
 
       height = perlin.simplex(noise, i, j)
       height *= max(0.1, 2 - gradient)
-      height *= 8
+      height = (height * 16).floor / 2 + 1
 
       result[i - sx][j - sy] = Cell(
         cellType: 0,

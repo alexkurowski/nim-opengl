@@ -10,9 +10,9 @@ uniform sampler2D textureColors;
 
 const float lightIntensity = 0.1;
 
-const vec3 topLightDirection  = normalize(vec3(0.0, 1.0, 0.0));
-const vec3 sideLightDirection = normalize(vec3(0.8, 1.0, 0.8));
-const vec3 backLightDirection = normalize(vec3(-0.8, -1.0, -0.8));
+const vec3 topLightDirection  = normalize(vec3(0.0, -1.0, 0.0));
+const vec3 sideLightDirection = normalize(vec3(0.8, -1.0, 0.8));
+const vec3 backLightDirection = normalize(vec3(-0.8, 1.0, -0.8));
 
 const vec3 topLightColor  = vec3(1.0, 0.95, 0.8);
 const vec3 sideLightColor = vec3(0.3, 0.8, 0.4);

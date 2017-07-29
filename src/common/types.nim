@@ -8,6 +8,11 @@ requires:
 
 
 type
+  ShaderType* {.pure.} = enum
+    simple,
+    chunk
+
+
   Action* {.pure.} = enum
     cameraRotateLeft,
     cameraRotateRight,

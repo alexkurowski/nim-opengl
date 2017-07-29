@@ -17,8 +17,8 @@ proc new*(height: float,
   ## idx    - seq for vertex indices
   let x1: float = x.float
   let x2: float = x.float + 1
-  let y1: float = -height
-  let y2: float = 0f
+  let y1: float = 0f
+  let y2: float = -height
   let z1: float = y.float
   let z2: float = y.float + 1
 
@@ -54,10 +54,10 @@ proc new*(height: float,
     x1, y2, z1,
 
     # bottom
-    x1, y1, z1,
-    x2, y1, z1,
-    x2, y1, z2,
-    x1, y1, z2
+    # x1, y1, z1,
+    # x2, y1, z1,
+    # x2, y1, z2,
+    # x1, y1, z2
   ]
 
   nrm = @[
@@ -92,15 +92,16 @@ proc new*(height: float,
     0.0, 1.0, 0.0,
 
     # bottom
-    0.0, -1.0, 0.0,
-    0.0, -1.0, 0.0,
-    0.0, -1.0, 0.0,
-    0.0, -1.0, 0.0
+    # 0.0, -1.0, 0.0,
+    # 0.0, -1.0, 0.0,
+    # 0.0, -1.0, 0.0,
+    # 0.0, -1.0, 0.0
   ]
 
   # Add a texture with id = 0 six times for each side
+  # except bottom
   tex = @[]
-  for _ in 1..6:
+  for _ in 1..5:
     for i in Texture.new(0):
       tex.add i
 
@@ -120,8 +121,8 @@ proc new*(height: float,
     16, 17, 18,
     18, 19, 16,
 
-    20, 21, 22,
-    22, 23, 20
+    # 20, 21, 22,
+    # 22, 23, 20
   ]
 
   for i in 0..idx.len - 1:

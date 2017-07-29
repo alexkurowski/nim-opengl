@@ -5,7 +5,7 @@ imports:
 
 requires:
   Graphics
-  game/states/GameplayState as Gameplay
+  states/GameplayState as Gameplay
 
 
 var

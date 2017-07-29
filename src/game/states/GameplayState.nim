@@ -24,8 +24,8 @@ var
 proc load*() =
   Chunks.initialize()
 
-  for i in 0..Config.mapSize:
-    for j in 0..Config.mapSize:
+  for i in 0..Config.mapSize - 1:
+    for j in 0..Config.mapSize - 1:
       chunkList.add Chunks.newChunkAt(i, j)
 
   Camera.moveTo vec3f(8, 0, 8)
