@@ -41,14 +41,19 @@ proc parseFloats(params: seq[string], x, y, z: var float) =
 
 proc load*(filename: string;
            vrt, nrm, tex, idx: var seq[float];
-           offset: Vec3f = vec3(0f, 0f, 0f),
+           ido: var int;
+           position: Vec3f = vec3(0f, 0f, 0f);
+           offset: Vec3f = vec3(0f, 0f, 0f);
            scale: Vec3f = vec3(1f, 1f, 1f)) =
+
+  var vs: seq[Vec3f] = @[]
   var vn: seq[Vec3f] = @[]
   var vt: seq[Vec2f] = @[]
 
   var params: seq[string]
   var i, j, k: int
   var x, y, z: float
+  var faceId = 0
 
   for line in lines("assets/models/" & filename & ".obj"):
     parseLine(line, params)
@@ -66,9 +71,11 @@ proc load*(filename: string;
 
     of "v":
       parseInts(params, i, j, k)
-      vrt.add( (i.float + offset.x) * scale.x )
-      vrt.add( (j.float + offset.y) * scale.y )
-      vrt.add( (k.float + offset.z) * scale.z )
+      vs.add vec3f(
+        (i.float + offset.x) * scale.x + position.x,
+        (j.float + offset.y) * scale.y + position.y,
+        (k.float + offset.z) * scale.z + position.z
+      )
 
     of "f":
       for face in 1..3:
@@ -76,11 +83,17 @@ proc load*(filename: string;
         i -= 1
         j -= 1
         k -= 1
-        nrm.add vn[k].x
-        nrm.add vn[k].y
-        nrm.add vn[k].z
-        tex.add vt[j].x
-        tex.add vt[j].y
-        idx.add i.float
+        vrt.add(vs[i].x)
+        vrt.add(vs[i].y)
+        vrt.add(vs[i].z)
+        nrm.add(vn[k].x)
+        nrm.add(vn[k].y)
+        nrm.add(vn[k].z)
+        tex.add(vt[j].x)
+        tex.add(vt[j].y)
+        idx.add((ido + faceId).float)
+        faceId += 1
 
     else: discard
+
+  ido += faceId

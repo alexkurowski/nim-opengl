@@ -16,10 +16,18 @@ proc new*(): int =
   var tex: seq[float] = @[]
   var idx: seq[float] = @[]
 
-  let offset = vec3f(4f, 0, 4f)
-  let scale  = vec3f(1/8)
+  var idOffset: int = 0
 
-  MeshLoader.load("grass1", vrt, nrm, tex, idx, offset, scale)
+  var position = vec3f(0f)
+  let offset   = vec3f(4f, 0, 4f)
+  let scale    = vec3f(1/8)
+
+  for i in 0..Config.chunkSize - 1:
+    for j in 0..Config.chunkSize - 1:
+      position.x = i.float
+      position.z = j.float
+
+      MeshLoader.load("grass1", vrt, nrm, tex, idx, idOffset, position, offset, scale)
 
   return Mesh.new(vrt, nrm, tex, idx)
 
